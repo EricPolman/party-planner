@@ -9,3 +9,4 @@
 - [] planner interface
 - [] guest interface
 - [] tailwind/shadcn/radix
+- [] share feature
