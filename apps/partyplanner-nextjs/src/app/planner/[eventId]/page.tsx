@@ -200,6 +200,9 @@ export default function Page() {
           </tbody>
         </table>
       </div>
+
+      <hr className="my-10" />
+      <h1 className="text-2xl mb-4">Deel deze uitnodiging</h1>
       <div className="flex gap-2 mt-4">
         <TelegramShareButton
           url={`https://jouwfeestjeplannen.nl/rsvp/${plannerEvent.id}`}
