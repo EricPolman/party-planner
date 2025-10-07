@@ -59,7 +59,7 @@ export function Hero() {
                   src="/festival-confetti-explosion-stockcake.jpg"
                   alt="Party planning dashboard"
                   className="w-full rounded-2xl h-[500px] object-cover"
-                  width={500}
+                  width={700}
                   height={500}
                   objectFit="cover"
                 />

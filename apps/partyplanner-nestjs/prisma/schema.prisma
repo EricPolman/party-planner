@@ -32,7 +32,7 @@ model Event {
   location    String?
   published Boolean? @default(false)
   organisers    User[]
-  invitees     Invitee[]
+  invitees     Invitee[] 
 }
 
 model Invitee {
@@ -41,7 +41,7 @@ model Invitee {
   phoneNumber String?
   firstName String?
   lastName  String?
-  event     Event    @relation(fields: [eventId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId   Int
   status    InviteeStatus @default(PENDING)
   respondedAt DateTime?

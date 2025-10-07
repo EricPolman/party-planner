@@ -28,18 +28,26 @@ import { AddInviteeForm } from "@/components/AddInviteeForm";
 import { Button } from "@/components/ui/button";
 import { useRemoveInvitee } from "@/hooks/useCreateEvent";
 import { InviteeStatusBadge } from "@/components/InviteeStatusBadge";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useDeleteEvent } from "@/hooks/useDeleteEvent";
 
 export default function Page() {
+  const router = useRouter();
   const { eventId } = useParams<{ eventId: string }>();
   const invitationRef = useRef<HTMLDivElement>(null);
 
   const { data: plannerEvent, isLoading, error } = usePlannerEventById(eventId);
 
   const removeInviteeMutation = useRemoveInvitee();
+  const deleteEventMutation = useDeleteEvent();
 
   const handleRemoveInvitee = (inviteeId: number) => {
     removeInviteeMutation.mutate({ eventId: +eventId, inviteeId });
+  };
+
+  const handleDeleteEvent = async (eventId: number) => {
+    await deleteEventMutation.mutateAsync(eventId);
+    router.push("/planner");
   };
 
   if (isLoading) {
@@ -213,6 +221,20 @@ export default function Page() {
         >
           <TelegramIcon />
         </TelegramShareButton>
+      </div>
+      <hr className="my-10" />
+      <h1 className="text-2xl mb-4">Gevarenzone</h1>
+      <div>
+        <p>Hieronder kun je het evenement verwijderen.</p>
+        <p className="mb-4 text-sm text-muted-foreground">
+          Dit kan niet ongedaan worden gemaakt.
+        </p>
+        <Button
+          variant="destructive"
+          onClick={() => handleDeleteEvent(plannerEvent.id)}
+        >
+          Verwijder evenement
+        </Button>
       </div>
     </div>
   );

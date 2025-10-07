@@ -1,15 +1,27 @@
-import HeaderUser from "@/integrations/clerk/header-user";
-import Link from "next/link.js";
+"use client";
 
-export default function Header() {
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@clerk/nextjs";
+import { PartyPopper } from "lucide-react";
+
+export function Header() {
+  const { signOut } = useAuth();
   return (
-    <header className="p-2 h-12 flex gap-2 bg-gradient-to-r from-purple-800 to-blue-800 text-white justify-between items-center">
-      <div>
-        <Link href="/" className="text-white hover:text-gray-300 font-bold">
-          JouwFeestjePlannen.nl
-        </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between">
+        <div className="flex items-center gap-2 pl-6">
+          <PartyPopper className="h-6 w-6 text-primary" />
+          <span className="text-xl font-bold text-foreground">
+            JouwFeestjePlannen.nl
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={() => signOut()}>
+            Afmelden
+          </Button>
+        </div>
       </div>
-      <HeaderUser />
     </header>
   );
 }

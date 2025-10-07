@@ -40,6 +40,33 @@ export class EventsController {
     return event;
   }
 
+  @Delete(':eventId')
+  async deleteEvent(
+    @Req() request: Request,
+    @Param('eventId', ParseIntPipe) eventId: number,
+  ) {
+    const event = await this.prismaClient.event.findUnique({
+      where: {
+        id: eventId,
+        organisers: {
+          some: {
+            id: { equals: request.user.id },
+          },
+        },
+      },
+    });
+    if (!event) {
+      throw new Error('Event not found');
+    }
+
+    await this.prismaClient.event.delete({
+      where: {
+        id: eventId,
+      },
+      include: { invitees: true },
+    });
+  }
+
   @Get()
   async getEvents(@Req() request: Request) {
     const events = await this.prismaClient.event.findMany({
