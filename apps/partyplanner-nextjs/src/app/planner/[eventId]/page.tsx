@@ -28,10 +28,11 @@ import { AddInviteeForm } from "@/components/AddInviteeForm";
 import { Button } from "@/components/ui/button";
 import { useRemoveInvitee } from "@/hooks/useCreateEvent";
 import { InviteeStatusBadge } from "@/components/InviteeStatusBadge";
+import { useParams } from "next/navigation";
 
-export default function Page({ params }: { params: { eventId: string } }) {
+export default function Page() {
+  const { eventId } = useParams<{ eventId: string }>();
   const invitationRef = useRef<HTMLDivElement>(null);
-  const { eventId } = params;
 
   const { data: plannerEvent, isLoading, error } = usePlannerEventById(eventId);
 

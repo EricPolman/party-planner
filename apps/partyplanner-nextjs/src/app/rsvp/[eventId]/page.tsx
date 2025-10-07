@@ -6,7 +6,8 @@ export default async function RSVPPage({
 }: {
   params: Promise<{ eventId: string }>;
 }) {
-  const event = await fetchRsvpEventById((await params).eventId);
+  const { eventId } = await params;
+  const event = await fetchRsvpEventById(eventId);
 
   return (
     <div className="mx-auto space-y-6">
