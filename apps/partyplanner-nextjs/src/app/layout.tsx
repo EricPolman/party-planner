@@ -4,8 +4,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import "./globals.css";
 import { QueryClientProvider } from "@/integrations/tanstack-query/root-provider";
-import HeaderUser from "@/integrations/clerk/header-user";
-import Header from "@/components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
