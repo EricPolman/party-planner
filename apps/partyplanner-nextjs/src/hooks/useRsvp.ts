@@ -21,17 +21,17 @@ export function useRsvpEventById(id: string) {
 export function useRsvpReply() {
   return useMutation({
     mutationFn: async (rsvp: {
-      eventId: number
-      email?: string
-      firstName: string
-      lastName?: string
-      phoneNumber?: string
-      status: PlannerEventInviteeResponseStatus
-      comments?: string
+      eventId: string;
+      email?: string;
+      firstName: string;
+      lastName?: string;
+      phoneNumber?: string;
+      status: PlannerEventInviteeResponseStatus;
+      comments?: string;
     }) => {
       return axiosClient
         .post(`/rsvp/${rsvp.eventId}`, rsvp)
-        .then((res) => res.data)
+        .then((res) => res.data);
     },
-  })
+  });
 }

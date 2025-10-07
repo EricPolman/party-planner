@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Invitee, InviteeStatus, PrismaClient } from 'generated/prisma';
 import { Public } from 'src/auth/public.decorator';
 
@@ -15,7 +8,7 @@ export class RsvpController {
 
   @Get(':eventId')
   @Public()
-  async getEventById(@Param('eventId', ParseIntPipe) eventId: number) {
+  async getEventById(@Param('eventId') eventId: string) {
     const event = await this.prismaClient.event.findUnique({
       where: {
         id: eventId,
@@ -29,7 +22,7 @@ export class RsvpController {
   @Post(':eventId')
   @Public()
   async rsvpReply(
-    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('eventId') eventId: string,
     @Body()
     body: {
       email?: string;
@@ -60,7 +53,7 @@ export class RsvpController {
       lastName?: string;
       status: InviteeStatus;
       comments?: string;
-      event: { connect: { id: number } };
+      event: { connect: { id: string } };
     } = {
       email: body.email,
       phoneNumber: body.phoneNumber,

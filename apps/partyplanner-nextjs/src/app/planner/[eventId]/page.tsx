@@ -41,11 +41,11 @@ export default function Page() {
   const removeInviteeMutation = useRemoveInvitee();
   const deleteEventMutation = useDeleteEvent();
 
-  const handleRemoveInvitee = (inviteeId: number) => {
-    removeInviteeMutation.mutate({ eventId: +eventId, inviteeId });
+  const handleRemoveInvitee = (inviteeId: string) => {
+    removeInviteeMutation.mutate({ eventId, inviteeId });
   };
 
-  const handleDeleteEvent = async (eventId: number) => {
+  const handleDeleteEvent = async (eventId: string) => {
     await deleteEventMutation.mutateAsync(eventId);
     router.push("/planner");
   };

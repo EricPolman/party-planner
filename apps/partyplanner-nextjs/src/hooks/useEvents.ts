@@ -10,7 +10,7 @@ export enum PlannerEventInviteeResponseStatus {
 }
 
 export interface PlannerEventInvitee {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string | null;
@@ -21,7 +21,7 @@ export interface PlannerEventInvitee {
 }
 
 export interface PlannerEventListItem {
-  id: number;
+  id: string;
   title: string;
   invitationText: string;
   startDate: string;

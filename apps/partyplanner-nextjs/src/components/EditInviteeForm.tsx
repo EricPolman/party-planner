@@ -33,19 +33,19 @@ const rsvpSchema = z.object({
 export function EditInviteeForm({
   eventId,
 }: {
-  eventId: number
-  inviteeReply: RsvpFormValues
+  eventId: string;
+  inviteeReply: RsvpFormValues;
 }) {
-  const rsvpMutation = useRsvpReply()
+  const rsvpMutation = useRsvpReply();
 
   const initialValues: RsvpFormValues = {
-    email: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
+    email: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
     status: PlannerEventInviteeResponseStatus.ACCEPTED,
-    comments: '',
-  }
+    comments: "",
+  };
 
   const form = useForm(
     formOptions({
@@ -54,7 +54,7 @@ export function EditInviteeForm({
         onChange: rsvpSchema,
       },
       onSubmit: async ({ value }) => {
-        const { email, firstName, lastName, phoneNumber } = value
+        const { email, firstName, lastName, phoneNumber } = value;
         await rsvpMutation.mutateAsync({
           eventId,
           email,
@@ -63,10 +63,10 @@ export function EditInviteeForm({
           phoneNumber,
           status: value.status,
           comments: value.comments,
-        })
+        });
       },
-    }),
-  )
+    })
+  );
 
   return (
     <div className="max-w-lg mx-auto">
@@ -81,9 +81,9 @@ export function EditInviteeForm({
       ) : (
         <form
           onSubmit={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            form.handleSubmit()
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
           }}
         >
           <div className="flex flex-col space-y-6">
@@ -95,14 +95,14 @@ export function EditInviteeForm({
                   <div className="space-x-4 grid grid-cols-3">
                     <Button
                       type="button"
-                      className={cn('bg-green-500 hover:bg-green-600', {
-                        'opacity-50':
+                      className={cn("bg-green-500 hover:bg-green-600", {
+                        "opacity-50":
                           field.state.value !==
                           PlannerEventInviteeResponseStatus.ACCEPTED,
                       })}
                       onClick={() =>
                         field.handleChange(
-                          PlannerEventInviteeResponseStatus.ACCEPTED,
+                          PlannerEventInviteeResponseStatus.ACCEPTED
                         )
                       }
                     >
@@ -110,14 +110,14 @@ export function EditInviteeForm({
                     </Button>
                     <Button
                       type="button"
-                      className={cn('bg-yellow-500 hover:bg-yellow-600', {
-                        'opacity-50':
+                      className={cn("bg-yellow-500 hover:bg-yellow-600", {
+                        "opacity-50":
                           field.state.value !==
                           PlannerEventInviteeResponseStatus.MAYBE,
                       })}
                       onClick={() =>
                         field.handleChange(
-                          PlannerEventInviteeResponseStatus.MAYBE,
+                          PlannerEventInviteeResponseStatus.MAYBE
                         )
                       }
                     >
@@ -125,14 +125,14 @@ export function EditInviteeForm({
                     </Button>
                     <Button
                       type="button"
-                      className={cn('bg-red-500 hover:bg-red-600', {
-                        'opacity-50':
+                      className={cn("bg-red-500 hover:bg-red-600", {
+                        "opacity-50":
                           field.state.value !==
                           PlannerEventInviteeResponseStatus.DECLINED,
                       })}
                       onClick={() =>
                         field.handleChange(
-                          PlannerEventInviteeResponseStatus.DECLINED,
+                          PlannerEventInviteeResponseStatus.DECLINED
                         )
                       }
                     >
@@ -235,7 +235,7 @@ export function EditInviteeForm({
               selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
                 <Button type="submit" className="mt-8" disabled={!canSubmit}>
-                  {isSubmitting && '...'} Aanwezigheid doorgeven
+                  {isSubmitting && "..."} Aanwezigheid doorgeven
                 </Button>
               )}
             />
@@ -243,5 +243,5 @@ export function EditInviteeForm({
         </form>
       )}
     </div>
-  )
+  );
 }

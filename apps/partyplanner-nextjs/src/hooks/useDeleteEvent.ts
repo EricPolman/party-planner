@@ -7,7 +7,7 @@ export function useDeleteEvent() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (eventId: number) => {
+    mutationFn: async (eventId: string) => {
       const token = await getToken();
 
       await axiosClient.delete(`/events/${eventId}`, {

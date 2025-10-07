@@ -32,7 +32,7 @@ const rsvpSchema = z.object({
   comments: z.string().max(500).optional(),
 });
 
-export function RsvpForm({ eventId }: { eventId: number }) {
+export function RsvpForm({ eventId }: { eventId: string }) {
   const rsvpMutation = useRsvpReply();
 
   const initialValues: RsvpFormValues = {

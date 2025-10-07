@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Req,
 } from '@nestjs/common';
@@ -43,7 +42,7 @@ export class EventsController {
   @Delete(':eventId')
   async deleteEvent(
     @Req() request: Request,
-    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('eventId') eventId: string,
   ) {
     const event = await this.prismaClient.event.findUnique({
       where: {
@@ -84,7 +83,7 @@ export class EventsController {
   @Get(':eventId')
   async getEventById(
     @Req() request: Request,
-    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('eventId') eventId: string,
   ) {
     const event = await this.prismaClient.event.findUnique({
       where: {
@@ -104,7 +103,7 @@ export class EventsController {
   @Post(':eventId/invitees')
   async addInvitee(
     @Req() request: Request,
-    @Param('eventId', ParseIntPipe) eventId: number,
+    @Param('eventId') eventId: string,
     @Body()
     body: {
       email?: string;
@@ -146,8 +145,8 @@ export class EventsController {
   @Delete(':eventId/invitees/:inviteeId')
   async removeInvitee(
     @Req() request: Request,
-    @Param('eventId', ParseIntPipe) eventId: number,
-    @Param('inviteeId', ParseIntPipe) inviteeId: number,
+    @Param('eventId') eventId: string,
+    @Param('inviteeId') inviteeId: string,
   ) {
     const event = await this.prismaClient.event.findUnique({
       where: {

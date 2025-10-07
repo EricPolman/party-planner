@@ -44,7 +44,7 @@ export function useAddInvitee() {
 
   return useMutation({
     mutationFn: async (newInvitee: {
-      eventId: number;
+      eventId: string;
       email?: string;
       firstName: string;
       lastName?: string;
@@ -74,7 +74,7 @@ export function useRemoveInvitee() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (params: { eventId: number; inviteeId: number }) => {
+    mutationFn: async (params: { eventId: string; inviteeId: string }) => {
       const token = await getToken();
       const response = await axiosClient.delete(
         `/events/${params.eventId}/invitees/${params.inviteeId}`,

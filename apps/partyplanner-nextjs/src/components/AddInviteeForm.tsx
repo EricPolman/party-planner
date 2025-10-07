@@ -19,15 +19,15 @@ const addInviteeSchema = z.object({
   phoneNumber: z.string().min(10).optional(),
 })
 
-export function AddInviteeForm({ eventId }: { eventId: number }) {
-  const addInviteeMutation = useAddInvitee()
+export function AddInviteeForm({ eventId }: { eventId: string }) {
+  const addInviteeMutation = useAddInvitee();
 
   const initialValues: AddInviteeFormValues = {
-    email: 'example@example.com',
-    firstName: 'John',
-    lastName: 'Doe',
-    phoneNumber: '1234567890',
-  }
+    email: "example@example.com",
+    firstName: "John",
+    lastName: "Doe",
+    phoneNumber: "1234567890",
+  };
 
   const form = useForm(
     formOptions({
@@ -36,27 +36,27 @@ export function AddInviteeForm({ eventId }: { eventId: number }) {
         onChange: addInviteeSchema,
       },
       onSubmit: async ({ value, formApi }) => {
-        const { email, firstName, lastName, phoneNumber } = value
+        const { email, firstName, lastName, phoneNumber } = value;
         await addInviteeMutation.mutateAsync({
           eventId,
           email,
           firstName,
           lastName,
           phoneNumber,
-        })
+        });
 
-        formApi.reset()
+        formApi.reset();
       },
-    }),
-  )
+    })
+  );
 
   return (
     <div className="w-full">
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          form.handleSubmit()
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
         }}
       >
         <div className="flex flex-row gap-3">
@@ -132,12 +132,12 @@ export function AddInviteeForm({ eventId }: { eventId: number }) {
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
               <Button type="submit" className="mt-8" disabled={!canSubmit}>
-                {isSubmitting && '...'} Gast toevoegen
+                {isSubmitting && "..."} Gast toevoegen
               </Button>
             )}
           />
         </div>
       </form>
     </div>
-  )
+  );
 }
