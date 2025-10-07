@@ -109,12 +109,14 @@ export default function Page({ params }: { params: { eventId: string } }) {
           </span>
         </div>
         <div className="flex flex-row gap-2 items-center">
-          <InviteeStatusBadge status={PlannerEventInviteeResponseStatus.NONE} />
+          <InviteeStatusBadge
+            status={PlannerEventInviteeResponseStatus.PENDING}
+          />
           <span>
             {
               plannerEvent.invitees.filter(
                 (invitee) =>
-                  invitee.status === PlannerEventInviteeResponseStatus.NONE
+                  invitee.status === PlannerEventInviteeResponseStatus.PENDING
               ).length
             }
           </span>

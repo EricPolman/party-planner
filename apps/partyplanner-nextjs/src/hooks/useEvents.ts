@@ -6,7 +6,7 @@ export enum PlannerEventInviteeResponseStatus {
   ACCEPTED = "ACCEPTED",
   DECLINED = "DECLINED",
   MAYBE = "MAYBE",
-  NONE = "NONE",
+  PENDING = "PENDING",
 }
 
 export interface PlannerEventInvitee {
