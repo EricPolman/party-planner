@@ -51,7 +51,7 @@ export function CreateEventForm() {
         }
 
         const { title, invitationText, startDate, endDate, location } = value;
-        await createEventMutation.mutateAsync({
+        const response = await createEventMutation.mutateAsync({
           title,
           invitationText,
           startDate,
@@ -61,9 +61,8 @@ export function CreateEventForm() {
 
         formApi.reset();
 
-        const id = createEventMutation.data?.id;
-        if (id) {
-          router.push(`/planner/${id}`);
+        if (response.id) {
+          router.push(`/planner/${response.id}`);
         }
       },
     })
