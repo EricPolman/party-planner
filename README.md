@@ -5,8 +5,8 @@
 - [] user accounts
 - [] shareable links / QR codes
 - [] donate buttons
-- [] dynamodb document
 - [] planner interface
 - [] guest interface
 - [] tailwind/shadcn/radix
 - [] share feature
+- [] chatgpt content moderation
