@@ -70,8 +70,8 @@ export function CreateEventForm() {
   );
 
   return (
-    <div className="max-w-lg mx-auto">
-      {/* <form
+    <div>
+      <form
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -163,7 +163,7 @@ export function CreateEventForm() {
             </Button>
           )}
         />
-      </form> */}
+      </form>
     </div>
   );
 }

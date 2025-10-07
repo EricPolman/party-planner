@@ -48,6 +48,7 @@ export function TiptapEditor({
   const handleChange = field?.onChange ?? onChange
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit.configure({
         bulletList: {
@@ -66,32 +67,36 @@ export function TiptapEditor({
     content: editorContent,
     editable,
     onUpdate: ({ editor }) => {
-      handleChange?.(editor.getHTML())
+      handleChange?.(editor.getHTML());
     },
     onBlur: () => {
-      field?.onBlur()
+      field?.onBlur();
     },
     editorProps: {
       attributes: {
         class: cn(
-          'prose prose-sm sm:prose-base max-w-none focus:outline-none min-h-[200px] px-4 py-3',
-          'prose-headings:font-semibold prose-headings:text-foreground',
-          'prose-p:text-foreground prose-p:leading-relaxed',
-          'prose-a:text-primary prose-a:no-underline hover:prose-a:underline',
-          'prose-strong:text-foreground prose-strong:font-semibold',
-          'prose-code:text-foreground prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none',
-          'prose-pre:bg-muted prose-pre:text-foreground',
-          'prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground',
-          'prose-ul:text-foreground prose-ol:text-foreground',
-          'prose-li:text-foreground',
+          "prose prose-sm sm:prose-base max-w-none focus:outline-none min-h-[200px] px-4 py-3",
+          "prose-headings:font-semibold prose-headings:text-foreground",
+          "prose-p:text-foreground prose-p:leading-relaxed",
+          "prose-a:text-primary prose-a:no-underline hover:prose-a:underline",
+          "prose-strong:text-foreground prose-strong:font-semibold",
+          "prose-code:text-foreground prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none",
+          "prose-pre:bg-muted prose-pre:text-foreground",
+          "prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground",
+          "prose-ul:text-foreground prose-ol:text-foreground",
+          "prose-li:text-foreground"
         ),
       },
     },
-  })
+  });
 
-  if (field && editor.getHTML() !== field.value) {
-    editor.commands.setContent(field.value)
+  if (field && editor && editor.getHTML() !== field.value) {
+    editor.commands.setContent(field.value);
   }
+
+  if (!editor) {
+    return null;
+  } 
 
   return (
     <div
