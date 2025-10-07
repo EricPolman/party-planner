@@ -162,23 +162,6 @@ export default function Page() {
                   : "-"}
               </TableCell>
               <TableCell>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button type="button" size="icon" variant="outline">
-                      <PencilIcon />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you absolutely sure?</DialogTitle>
-                      <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete your account and remove your data from our
-                        servers.
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
                 <Button
                   size="icon"
                   variant="outline"
@@ -200,7 +183,9 @@ export default function Page() {
       <h1 className="text-2xl mb-4">De uitnodiging</h1>
       <div ref={invitationRef} className="p-4 border rounded">
         <strong>{plannerEvent.title}</strong>
-        <p>{plannerEvent.invitationText}</p>
+        <div
+          dangerouslySetInnerHTML={{ __html: plannerEvent.invitationText }}
+        />
         <br />
         <table>
           <tbody>
@@ -217,8 +202,8 @@ export default function Page() {
       </div>
       <div className="flex gap-2 mt-4">
         <TelegramShareButton
-          url={window.location.href}
-          title={invitationRef.current?.innerHTML || ""}
+          url={`https://jouwfeestjeplannen.nl/rsvp/${plannerEvent.id}`}
+          title={invitationRef.current?.innerText || ""}
         >
           <TelegramIcon />
         </TelegramShareButton>

@@ -1,6 +1,12 @@
 import { fetchRsvpEventById } from "@/hooks/useRsvp";
 import { RsvpForm } from "@/components/RsvpReplyForm";
 
+// Metadata should include event title if possible
+export async function generateMetadata({ params }: { params: { eventId: string } }) {
+  const event = await fetchRsvpEventById(params.eventId);
+  return { title: event?.title || "RSVP", description: event?.invitationText };
+}
+
 export default async function RSVPPage({
   params,
 }: {
