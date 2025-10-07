@@ -76,6 +76,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto">
+      <h1 className="text-3xl font-bold my-4">{plannerEvent.title}</h1>
       <h1 className="text-2xl mb-4">Gastenlijst</h1>
       <div className="flex flex-row gap-6 my-4">
         <div className="flex flex-row gap-2 items-center">

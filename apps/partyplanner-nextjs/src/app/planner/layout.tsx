@@ -8,7 +8,7 @@ export default function PlannerLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container">{children}</div>
+      <div className="container pt-4">{children}</div>
     </div>
   );
 }
