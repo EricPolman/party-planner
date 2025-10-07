@@ -1,3 +1,5 @@
+"use client";
+
 import { z } from "zod";
 import { formOptions, useForm } from "@tanstack/react-form";
 import { Field, FieldLabel } from "./ui/field";
@@ -69,7 +71,7 @@ export function CreateEventForm() {
 
   return (
     <div className="max-w-lg mx-auto">
-      <form
+      {/* <form
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -161,7 +163,7 @@ export function CreateEventForm() {
             </Button>
           )}
         />
-      </form>
+      </form> */}
     </div>
   );
 }

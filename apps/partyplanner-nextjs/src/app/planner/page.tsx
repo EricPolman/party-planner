@@ -1,3 +1,5 @@
+"use client";
+
 import { usePlannerEvents } from "@/hooks/useEvents";
 
 export default function PlannerPage() {
