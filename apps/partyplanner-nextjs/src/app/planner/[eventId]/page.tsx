@@ -2,8 +2,9 @@
 
 import { useRef } from "react";
 import { TelegramIcon, TelegramShareButton } from "react-share";
-import { PencilIcon, TrashIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import { format, isSameDay } from "date-fns";
+import { convert } from "html-to-text";
 import {
   Table,
   TableBody,
@@ -12,14 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   PlannerEventInviteeResponseStatus,
   usePlannerEventById,
@@ -73,6 +66,31 @@ export default function Page() {
         month: "2-digit",
         year: "numeric",
       })}`;
+
+  const invitationText = invitationRef.current
+    ? convert(invitationRef.current.innerHTML, {
+        formatters: {
+          title: function (elem, walk, builder, formatOptions) {
+            builder.addLiteral("\n");
+            walk(elem.children, builder);
+            builder.addLiteral("\n---------------------------\n");
+          },
+        },
+        wordwrap: 130,
+        selectors: [
+          {
+            selector: "h3",
+            format: "title",
+          },
+          {
+            selector: "table",
+            format: "dataTable",
+          },
+        ],
+      })
+    : "";
+
+  console.log("Invitation text:", invitationText);
 
   return (
     <div className="mx-auto">
@@ -182,11 +200,10 @@ export default function Page() {
       <hr className="my-10" />
       <h1 className="text-2xl mb-4">De uitnodiging</h1>
       <div ref={invitationRef} className="p-4 border rounded">
-        <strong>{plannerEvent.title}</strong>
+        <h3>{plannerEvent.title}</h3>
         <div
           dangerouslySetInnerHTML={{ __html: plannerEvent.invitationText }}
         />
-        <br />
         <table>
           <tbody>
             <tr>
@@ -206,7 +223,7 @@ export default function Page() {
       <div className="flex gap-2 mt-4">
         <TelegramShareButton
           url={`https://jouwfeestjeplannen.nl/rsvp/${plannerEvent.id}`}
-          title={invitationRef.current?.innerText || ""}
+          title={invitationText}
         >
           <TelegramIcon />
         </TelegramShareButton>
