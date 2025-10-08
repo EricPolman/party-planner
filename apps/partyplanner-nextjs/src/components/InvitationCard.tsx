@@ -1,6 +1,7 @@
 import { Invitation } from "@/types/invitations";
 import { format, isSameDay } from "date-fns";
 import { nl } from "date-fns/locale";
+import Markdown from "react-markdown";
 
 export function InvitationCard({
   invitation,
@@ -28,7 +29,7 @@ export function InvitationCard({
           Georganiseerd door: {invitation.organisers.join(", ")}
         </div>
       )}
-      <div dangerouslySetInnerHTML={{ __html: invitation.message }} />
+      <Markdown>{invitation.message}</Markdown>
       <table>
         <tbody>
           <tr>

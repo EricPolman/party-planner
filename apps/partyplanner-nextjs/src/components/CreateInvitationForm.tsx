@@ -8,7 +8,8 @@ import { Button } from "./ui/button";
 import { TiptapEditor } from "./ui/editor";
 import { DateTimePicker } from "./ui/datetime-picker";
 import { useCreateInvitation } from "@/hooks/useCreateEvent";
-import { useRouter } from "next/navigation";
+import Markdown from "react-markdown";
+import { MarkdownEditor } from "./ui/markdown-editor";
 
 interface CreateEventFormValues {
   title: string;
@@ -52,7 +53,7 @@ export function CreateInvitationForm({ eventId }: { eventId: string }) {
         await createInvitation.mutateAsync({
           eventId,
           title,
-          message,
+          message: message.replaceAll("\n", "\n\n"),
           startDate,
           endDate,
           location,
@@ -95,8 +96,8 @@ export function CreateInvitationForm({ eventId }: { eventId: string }) {
             children={(field) => (
               <Field>
                 <FieldLabel htmlFor="message">Uitnodigingstekst</FieldLabel>
-                <TiptapEditor
-                  content={field.state.value}
+                <MarkdownEditor
+                  value={field.state.value}
                   onChange={field.handleChange}
                 />
               </Field>
