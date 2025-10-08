@@ -19,6 +19,7 @@ import { format } from "date-fns/format";
 import { convert } from "html-to-text";
 import { TelegramIcon, TelegramShareButton } from "react-share";
 import { InvitationCard } from "./InvitationCard";
+import Link from "next/link";
 
 export function InvitationDetails({
   invitation,
@@ -167,6 +168,22 @@ export function InvitationDetails({
         >
           <TelegramIcon />
         </TelegramShareButton>
+        <Link
+          href={`/rsvp/${invitation.code}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Button>Bekijk uitnodiging</Button>
+        </Link>
+        <Button
+          onClick={() =>
+            navigator.clipboard.writeText(
+              `${window.location.origin}/rsvp/${invitation.code}`
+            )
+          }
+        >
+          Kopieer link
+        </Button>
       </div>
     </div>
   );

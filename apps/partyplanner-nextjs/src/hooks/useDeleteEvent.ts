@@ -17,10 +17,12 @@ export function useDeleteEvent() {
       });
     },
     onSuccess: () => {
-      // Invalidate any queries related to events
-      queryClient.invalidateQueries({
-        queryKey: ["events"],
-      });
+      setTimeout(() => {
+        // Invalidate any queries related to events
+        queryClient.invalidateQueries({
+          queryKey: ["events"],
+        });
+      }, 1000);
     },
   });
 }

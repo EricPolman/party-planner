@@ -1,12 +1,9 @@
 "use client";
 
-import { Header } from "@/components/landing/Header";
+import { Header } from "@/components/Header";
 import { Hero } from "@/components/landing/Hero";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
   return (
     <div className="w-full">
       <Header />

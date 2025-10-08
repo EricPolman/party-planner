@@ -18,6 +18,7 @@ export default function Page() {
   const handleDeleteEvent = async (eventId: string) => {
     await deleteEventMutation.mutateAsync(eventId);
     router.push("/planner");
+    deleteEventMutation;
   };
 
   if (isLoading) {

@@ -1,4 +1,5 @@
 import { InvitationCard } from "@/components/InvitationCard";
+import { Header } from "@/components/Header";
 import { RsvpForm } from "@/components/RsvpReplyForm";
 import { fetchRsvpInvitationByInvitationCode } from "@/hooks/useRsvp";
 
@@ -23,9 +24,12 @@ export default async function RSVPPage({
   const invitation = await fetchRsvpInvitationByInvitationCode(invitationCode);
 
   return (
-    <div className="mx-auto space-y-6 max-w-xl p-4">
-      <InvitationCard invitation={invitation} />
-      <RsvpForm invitationCode={invitationCode} />
+    <div>
+      <Header />
+      <div className="mx-auto space-y-6 max-w-xl p-4">
+        <InvitationCard invitation={invitation} />
+        <RsvpForm invitationCode={invitationCode} />
+      </div>
     </div>
   );
 }
