@@ -1,11 +1,24 @@
 import { Invitation } from "@/types/invitations";
+import { format, isSameDay } from "date-fns";
+import { nl } from "date-fns/locale";
 
 export function InvitationCard({
   invitation,
 }: {
   invitation: Omit<Invitation, "invitees"> & { organisers?: string[] };
 }) {
-  const dateText = new Date(invitation.startDate).toLocaleString().slice(0, -3);
+  const startDate = new Date(invitation.startDate);
+  const endDate = invitation.endDate ? new Date(invitation.endDate) : null;
+
+  const sameDay = endDate ? isSameDay(startDate, endDate) : true;
+  const startDateText = format(startDate, "PPP HH:mm", {
+    locale: nl,
+  });
+  const endDateText = endDate
+    ? format(endDate, sameDay ? "HH:mm" : "PPP HH:mm", {
+        locale: nl,
+      })
+    : null;
 
   return (
     <div className="p-4 border rounded bg-white">
@@ -20,7 +33,10 @@ export function InvitationCard({
         <tbody>
           <tr>
             <td className="w-32">🕙 Wanneer?</td>
-            <td>{dateText}</td>
+            <td>
+              {startDateText}
+              {invitation.endDate && <> tot {endDateText}</>}
+            </td>
           </tr>
           <tr>
             <td className="w-32">📍 Waar?</td>
