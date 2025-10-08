@@ -163,10 +163,6 @@ export class InvitationsController {
       },
     });
 
-    if (!event) {
-      throw new Error('Event not found');
-    }
-
     await this.prismaClient.invitee.deleteMany({
       where: {
         id: inviteeId,
