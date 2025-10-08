@@ -1,36 +1,36 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
-import type {
-  PlannerEventInviteeResponseStatus,
-  PlannerEventListItem,
-} from './useEvents'
-import { axiosClient } from '@/lib/axios'
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { axiosClient } from "@/lib/axios";
+import { PlannerEventListItem } from "@/types/events";
+import { InviteeResponseStatus } from "@/types/invitees";
 
-export function fetchRsvpEventById(id: string): Promise<PlannerEventListItem> {
-  return axiosClient.get(`/rsvp/${id}`).then((res) => res.data)
+export function fetchRsvpEventByInvitationCode(
+  invitationCode: string
+): Promise<PlannerEventListItem> {
+  return axiosClient.get(`/rsvp/${invitationCode}`).then((res) => res.data);
 }
 
-export function useRsvpEventById(id: string) {
+export function useRsvpEventById(invitationCode: string) {
   return useQuery({
-    queryKey: ['events', id],
+    queryKey: ["events", invitationCode],
     queryFn: async (): Promise<PlannerEventListItem> => {
-      return fetchRsvpEventById(id)
+      return fetchRsvpEventByInvitationCode(invitationCode);
     },
-  })
+  });
 }
 
 export function useRsvpReply() {
   return useMutation({
     mutationFn: async (rsvp: {
-      eventId: string;
+      invitationCode: string;
       email?: string;
       firstName: string;
       lastName?: string;
       phoneNumber?: string;
-      status: PlannerEventInviteeResponseStatus;
+      status: InviteeResponseStatus;
       comments?: string;
     }) => {
       return axiosClient
-        .post(`/rsvp/${rsvp.eventId}`, rsvp)
+        .post(`/rsvp/${rsvp.invitationCode}`, rsvp)
         .then((res) => res.data);
     },
   });

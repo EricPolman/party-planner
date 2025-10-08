@@ -19,7 +19,7 @@ const addInviteeSchema = z.object({
   phoneNumber: z.string().min(10).optional(),
 })
 
-export function AddInviteeForm({ eventId }: { eventId: string }) {
+export function AddInviteeForm({ invitationId }: { invitationId: string }) {
   const addInviteeMutation = useAddInvitee();
 
   const initialValues: AddInviteeFormValues = {
@@ -38,7 +38,7 @@ export function AddInviteeForm({ eventId }: { eventId: string }) {
       onSubmit: async ({ value, formApi }) => {
         const { email, firstName, lastName, phoneNumber } = value;
         await addInviteeMutation.mutateAsync({
-          eventId,
+          invitationId,
           email,
           firstName,
           lastName,

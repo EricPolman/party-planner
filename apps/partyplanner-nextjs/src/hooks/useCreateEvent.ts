@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@clerk/nextjs";
-import type { PlannerEvent } from "./useEvents";
 
 import { axiosClient } from "@/lib/axios";
+import { PlannerEvent } from "@/types/events";
 
 export function useCreateEvent() {
   const { getToken } = useAuth();
@@ -10,13 +10,7 @@ export function useCreateEvent() {
 
   // Add your custom logic here
   return useMutation({
-    mutationFn: async (newEvent: {
-      title: string;
-      invitationText: string;
-      startDate: Date;
-      endDate: Date;
-      location: string;
-    }) => {
+    mutationFn: async (newEvent: { title: string; description: string }) => {
       const token = await getToken();
 
       const response = await axiosClient.post<PlannerEvent>(
@@ -37,6 +31,41 @@ export function useCreateEvent() {
     },
   });
 }
+export function useCreateInvitation() {
+  const { getToken } = useAuth();
+  const queryClient = useQueryClient();
+
+  // Add your custom logic here
+  return useMutation({
+    mutationFn: async (newEvent: {
+      eventId: string;
+      title: string;
+      message: string;
+      startDate: Date;
+      endDate: Date;
+      location: string;
+    }) => {
+      const token = await getToken();
+
+      const response = await axiosClient.post<PlannerEvent>(
+        `invitations`,
+        newEvent,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+    },
+  });
+}
 
 export function useAddInvitee() {
   const { getToken } = useAuth();
@@ -44,7 +73,7 @@ export function useAddInvitee() {
 
   return useMutation({
     mutationFn: async (newInvitee: {
-      eventId: string;
+      invitationId: string;
       email?: string;
       firstName: string;
       lastName?: string;
@@ -52,7 +81,7 @@ export function useAddInvitee() {
     }) => {
       const token = await getToken();
       const response = await axiosClient.post(
-        `/events/${newInvitee.eventId}/invitees`,
+        `/invitations/${newInvitee.invitationId}/invitees`,
         newInvitee,
         {
           headers: {
@@ -66,6 +95,7 @@ export function useAddInvitee() {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
     },
   });
 }
@@ -74,10 +104,10 @@ export function useRemoveInvitee() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (params: { eventId: string; inviteeId: string }) => {
+    mutationFn: async (params: { invitationId: string; inviteeId: string }) => {
       const token = await getToken();
       const response = await axiosClient.delete(
-        `/events/${params.eventId}/invitees/${params.inviteeId}`,
+        `/invitations/${params.invitationId}/invitees/${params.inviteeId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -86,6 +116,7 @@ export function useRemoveInvitee() {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
     },
   });
 }

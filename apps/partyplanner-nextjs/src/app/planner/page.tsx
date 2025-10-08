@@ -16,13 +16,7 @@ export default function PlannerPage() {
             className="block p-4 border border-gray-300 rounded-lg hover:shadow-lg transition-shadow"
           >
             <h2 className="text-xl font-bold mb-2">{event.title}</h2>
-            <p className="text-gray-600 mb-1">
-              {new Date(event.startDate).toLocaleString()} -{" "}
-              {new Date(event.endDate).toLocaleString()}
-            </p>
-            {event.location && (
-              <p className="text-gray-600">Location: {event.location}</p>
-            )}
+            <p className="text-gray-600 mb-1">{event.description}</p>
           </a>
         ))}
         <a

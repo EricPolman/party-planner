@@ -1,37 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/nextjs";
 import { axiosClient } from "@/lib/axios";
-
-export enum PlannerEventInviteeResponseStatus {
-  ACCEPTED = "ACCEPTED",
-  DECLINED = "DECLINED",
-  MAYBE = "MAYBE",
-  PENDING = "PENDING",
-}
-
-export interface PlannerEventInvitee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string | null;
-  phoneNumber: string | null;
-  status: PlannerEventInviteeResponseStatus;
-  comments: string | null;
-  respondedAt: string | null;
-}
-
-export interface PlannerEventListItem {
-  id: string;
-  title: string;
-  invitationText: string;
-  startDate: string;
-  endDate: string;
-  location: string | null;
-}
-
-export interface PlannerEvent extends PlannerEventListItem {
-  invitees: Array<PlannerEventInvitee>;
-}
+import { PlannerEvent, PlannerEventListItem } from "@/types/events";
 
 export function fetchEvents(token: string) {
   return axiosClient

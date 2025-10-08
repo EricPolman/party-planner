@@ -20,19 +20,13 @@ export class EventsController {
     @Body()
     body: {
       title: string;
-      invitationText: string;
-      startDate: Date;
-      endDate: Date;
-      location?: string;
+      description: string;
     },
   ) {
     const event = await this.prismaClient.event.create({
       data: {
         title: body.title,
-        invitationText: body.invitationText,
-        startDate: body.startDate,
-        endDate: body.endDate,
-        location: body.location,
+        description: body.description,
         organisers: { connect: { id: request.user.id } },
       },
     });
@@ -44,7 +38,7 @@ export class EventsController {
     @Req() request: Request,
     @Param('eventId') eventId: string,
   ) {
-    const event = await this.prismaClient.event.findUnique({
+    const event = await this.prismaClient.event.findUniqueOrThrow({
       where: {
         id: eventId,
         organisers: {
@@ -62,7 +56,6 @@ export class EventsController {
       where: {
         id: eventId,
       },
-      include: { invitees: true },
     });
   }
 
@@ -85,7 +78,7 @@ export class EventsController {
     @Req() request: Request,
     @Param('eventId') eventId: string,
   ) {
-    const event = await this.prismaClient.event.findUnique({
+    const event = await this.prismaClient.event.findUniqueOrThrow({
       where: {
         id: eventId,
         organisers: {
@@ -94,80 +87,9 @@ export class EventsController {
           },
         },
       },
-      include: { invitees: true },
+      include: { invitations: true },
     });
 
     return event;
-  }
-
-  @Post(':eventId/invitees')
-  async addInvitee(
-    @Req() request: Request,
-    @Param('eventId') eventId: string,
-    @Body()
-    body: {
-      email?: string;
-      phoneNumber?: string;
-      firstName?: string;
-      lastName?: string;
-    },
-  ) {
-    const event = await this.prismaClient.event.findUnique({
-      where: {
-        id: eventId,
-        organisers: {
-          some: {
-            id: { equals: request.user.id },
-          },
-        },
-      },
-    });
-
-    if (!event) {
-      throw new Error('Event not found');
-    }
-
-    const inviteeData = {
-      email: body.email,
-      phoneNumber: body.phoneNumber,
-      firstName: body.firstName,
-      lastName: body.lastName,
-      event: { connect: { id: eventId } },
-    };
-
-    const invitee = await this.prismaClient.invitee.create({
-      data: inviteeData,
-    });
-
-    return invitee;
-  }
-
-  @Delete(':eventId/invitees/:inviteeId')
-  async removeInvitee(
-    @Req() request: Request,
-    @Param('eventId') eventId: string,
-    @Param('inviteeId') inviteeId: string,
-  ) {
-    const event = await this.prismaClient.event.findUnique({
-      where: {
-        id: eventId,
-        organisers: {
-          some: {
-            id: { equals: request.user.id },
-          },
-        },
-      },
-    });
-
-    if (!event) {
-      throw new Error('Event not found');
-    }
-
-    await this.prismaClient.invitee.deleteMany({
-      where: {
-        id: inviteeId,
-        eventId: eventId,
-      },
-    });
   }
 }

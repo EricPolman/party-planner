@@ -7,15 +7,15 @@ import { Field, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useRsvpReply } from "@/hooks/useRsvp";
-import { PlannerEventInviteeResponseStatus } from "@/hooks/useEvents";
 import { cn } from "@/lib/utils";
+import { InviteeResponseStatus } from "@/types/invitees";
 
 interface RsvpFormValues {
   email?: string;
   firstName: string;
   lastName?: string;
   phoneNumber?: string;
-  status: PlannerEventInviteeResponseStatus;
+  status: InviteeResponseStatus;
   comments?: string;
 }
 
@@ -25,14 +25,14 @@ const rsvpSchema = z.object({
   lastName: z.string().min(2).max(100),
   phoneNumber: z.string().min(10).optional(),
   status: z.enum([
-    PlannerEventInviteeResponseStatus.ACCEPTED,
-    PlannerEventInviteeResponseStatus.DECLINED,
-    PlannerEventInviteeResponseStatus.MAYBE,
+    InviteeResponseStatus.ACCEPTED,
+    InviteeResponseStatus.DECLINED,
+    InviteeResponseStatus.MAYBE,
   ]),
   comments: z.string().max(500).optional(),
 });
 
-export function RsvpForm({ eventId }: { eventId: string }) {
+export function RsvpForm({ invitationCode }: { invitationCode: string }) {
   const rsvpMutation = useRsvpReply();
 
   const initialValues: RsvpFormValues = {
@@ -40,7 +40,7 @@ export function RsvpForm({ eventId }: { eventId: string }) {
     firstName: "",
     lastName: "",
     phoneNumber: "",
-    status: PlannerEventInviteeResponseStatus.ACCEPTED,
+    status: InviteeResponseStatus.ACCEPTED,
     comments: "",
   };
 
@@ -53,7 +53,7 @@ export function RsvpForm({ eventId }: { eventId: string }) {
       onSubmit: async ({ value }) => {
         const { email, firstName, lastName, phoneNumber } = value;
         await rsvpMutation.mutateAsync({
-          eventId,
+          invitationCode,
           email,
           firstName,
           lastName,
@@ -94,13 +94,10 @@ export function RsvpForm({ eventId }: { eventId: string }) {
                       type="button"
                       className={cn("bg-green-500 hover:bg-green-600", {
                         "opacity-50":
-                          field.state.value !==
-                          PlannerEventInviteeResponseStatus.ACCEPTED,
+                          field.state.value !== InviteeResponseStatus.ACCEPTED,
                       })}
                       onClick={() =>
-                        field.handleChange(
-                          PlannerEventInviteeResponseStatus.ACCEPTED
-                        )
+                        field.handleChange(InviteeResponseStatus.ACCEPTED)
                       }
                     >
                       Aanwezig
@@ -109,13 +106,10 @@ export function RsvpForm({ eventId }: { eventId: string }) {
                       type="button"
                       className={cn("bg-yellow-500 hover:bg-yellow-600", {
                         "opacity-50":
-                          field.state.value !==
-                          PlannerEventInviteeResponseStatus.MAYBE,
+                          field.state.value !== InviteeResponseStatus.MAYBE,
                       })}
                       onClick={() =>
-                        field.handleChange(
-                          PlannerEventInviteeResponseStatus.MAYBE
-                        )
+                        field.handleChange(InviteeResponseStatus.MAYBE)
                       }
                     >
                       Misschien
@@ -124,13 +118,10 @@ export function RsvpForm({ eventId }: { eventId: string }) {
                       type="button"
                       className={cn("bg-red-500 hover:bg-red-600", {
                         "opacity-50":
-                          field.state.value !==
-                          PlannerEventInviteeResponseStatus.DECLINED,
+                          field.state.value !== InviteeResponseStatus.DECLINED,
                       })}
                       onClick={() =>
-                        field.handleChange(
-                          PlannerEventInviteeResponseStatus.DECLINED
-                        )
+                        field.handleChange(InviteeResponseStatus.DECLINED)
                       }
                     >
                       Afwezig

@@ -6,23 +6,21 @@ import { Public } from 'src/auth/public.decorator';
 export class RsvpController {
   constructor(private readonly prismaClient: PrismaClient) {}
 
-  @Get(':eventId')
+  @Get(':invitationCode')
   @Public()
-  async getEventById(@Param('eventId') eventId: string) {
-    const event = await this.prismaClient.event.findUnique({
+  async getInvitationByCode(@Param('invitationCode') invitationCode: string) {
+    return this.prismaClient.invitation.findUniqueOrThrow({
       where: {
-        id: eventId,
-        published: true,
+        code: invitationCode,
+        isActive: true,
       },
     });
-
-    return event;
   }
 
-  @Post(':eventId')
+  @Post(':invitationCode')
   @Public()
   async rsvpReply(
-    @Param('eventId') eventId: string,
+    @Param('invitationCode') invitationCode: string,
     @Body()
     body: {
       email?: string;
@@ -33,16 +31,12 @@ export class RsvpController {
       status: InviteeStatus;
     },
   ) {
-    const event = await this.prismaClient.event.findUnique({
+    const invitation = await this.prismaClient.invitation.findUniqueOrThrow({
       where: {
-        id: eventId,
-        published: true,
+        code: invitationCode,
+        isActive: true,
       },
     });
-
-    if (!event) {
-      throw new Error('Event not found');
-    }
 
     // Upsert invitee based on email or phone number
     // If neither is provided, create a new invitee
@@ -53,7 +47,7 @@ export class RsvpController {
       lastName?: string;
       status: InviteeStatus;
       comments?: string;
-      event: { connect: { id: string } };
+      invitation: { connect: { id: string } };
     } = {
       email: body.email,
       phoneNumber: body.phoneNumber,
@@ -61,7 +55,7 @@ export class RsvpController {
       lastName: body.lastName,
       status: body.status,
       comments: body.comments,
-      event: { connect: { id: eventId } },
+      invitation: { connect: { id: invitation.id } },
     };
 
     let invitee: Invitee | null = null;

@@ -26,12 +26,22 @@ model User {
 model Event {
   id        String   @default(uuid()) @id
   title     String
-  invitationText   String
-  startDate   DateTime @default(now())
-  endDate     DateTime @default(now())
-  location    String?
-  published Boolean? @default(true)
+  invitations Invitation[]
+  description   String?
   organisers    User[]
+}
+
+model Invitation {
+  id        String   @default(uuid()) @id
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId   String
+  code      String @unique
+  startDate   DateTime @default(now())
+  endDate     DateTime? @default(now())
+  location    String?
+  title     String
+  message     String
+  isActive Boolean? @default(true)
   invitees     Invitee[] 
 }
 
@@ -41,8 +51,8 @@ model Invitee {
   phoneNumber String?
   firstName String?
   lastName  String?
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  eventId   String
+  invitation     Invitation    @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  invitationId   String
   status    InviteeStatus @default(PENDING)
   respondedAt DateTime?
   comments  String?

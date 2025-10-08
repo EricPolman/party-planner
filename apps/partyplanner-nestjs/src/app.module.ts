@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { ClerkClientProvider } from './providers/clerk-client.provider';
@@ -10,6 +9,7 @@ import { PrismaClient } from 'generated/prisma';
 import { EventsModule } from './events/events.module';
 import { RsvpModule } from './rsvp/rsvp.module';
 import { SentryModule } from '@sentry/nestjs/setup';
+import { InvitationsModule } from './invitations/invitations.module';
 
 @Module({
   imports: [
@@ -19,8 +19,9 @@ import { SentryModule } from '@sentry/nestjs/setup';
     UsersModule,
     EventsModule,
     RsvpModule,
+    InvitationsModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
     ClerkClientProvider,
     PrismaClient,

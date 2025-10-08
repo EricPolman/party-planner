@@ -1,28 +1,28 @@
-import { match } from 'ts-pattern'
-import { PlannerEventInviteeResponseStatus } from '@/hooks/useEvents'
+import { InviteeResponseStatus } from "@/types/invitees";
+import { match } from "ts-pattern";
 
 export function InviteeStatusBadge({
   status,
 }: {
-  status: PlannerEventInviteeResponseStatus
+  status: InviteeResponseStatus;
 }) {
   return match(status)
-    .with(PlannerEventInviteeResponseStatus.ACCEPTED, () => (
+    .with(InviteeResponseStatus.ACCEPTED, () => (
       <span className="bg-green-600 text-white px-2 py-1 rounded font-semibold">
         Aanwezig
       </span>
     ))
-    .with(PlannerEventInviteeResponseStatus.DECLINED, () => (
+    .with(InviteeResponseStatus.DECLINED, () => (
       <span className="bg-red-600 text-white px-2 py-1 rounded font-semibold">
         Afwezig
       </span>
     ))
-    .with(PlannerEventInviteeResponseStatus.MAYBE, () => (
+    .with(InviteeResponseStatus.MAYBE, () => (
       <span className="bg-yellow-600 text-white px-2 py-1 rounded font-semibold">
         Misschien
       </span>
     ))
-    .with(PlannerEventInviteeResponseStatus.PENDING, () => (
+    .with(InviteeResponseStatus.PENDING, () => (
       <span className="bg-gray-600 text-white px-2 py-1 rounded font-semibold">
         In afwachting
       </span>

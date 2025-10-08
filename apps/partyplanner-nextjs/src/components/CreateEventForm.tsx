@@ -5,25 +5,17 @@ import { formOptions, useForm } from "@tanstack/react-form";
 import { Field, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { TiptapEditor } from "./ui/editor";
-import { DateTimePicker } from "./ui/datetime-picker";
 import { useCreateEvent } from "@/hooks/useCreateEvent";
 import { useRouter } from "next/navigation";
 
 interface CreateEventFormValues {
   title: string;
-  invitationText: string;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  location: string;
+  description: string;
 }
 
 const createEventSchema = z.object({
   title: z.string().min(2).max(100),
-  invitationText: z.string().max(500),
-  startDate: z.date(),
-  endDate: z.date(),
-  location: z.string().min(2).max(100),
+  description: z.string().max(500),
 });
 
 export function CreateEventForm() {
@@ -33,10 +25,8 @@ export function CreateEventForm() {
 
   const initialValues: CreateEventFormValues = {
     title: "Mijn verjaardagsfeestje",
-    invitationText: "Kom naar mijn partijtje",
-    startDate: new Date(),
-    endDate: new Date(),
-    location: "Thuis",
+    description:
+      "Jouw beschrijving van het feestje, niet de uitnodigingstekst.",
   };
 
   const form = useForm(
@@ -46,17 +36,10 @@ export function CreateEventForm() {
         onChange: createEventSchema,
       },
       onSubmit: async ({ value, formApi }) => {
-        if (!value.startDate || !value.endDate) {
-          return;
-        }
-
-        const { title, invitationText, startDate, endDate, location } = value;
+        const { title, description } = value;
         const response = await createEventMutation.mutateAsync({
           title,
-          invitationText,
-          startDate,
-          endDate,
-          location,
+          description,
         });
 
         formApi.reset();
@@ -96,54 +79,13 @@ export function CreateEventForm() {
             )}
           />
           <form.Field
-            name="invitationText"
+            name="description"
             children={(field) => (
               <Field>
-                <FieldLabel htmlFor="invitationText">
-                  Uitnodigingstekst
-                </FieldLabel>
-                <TiptapEditor
-                  content={field.state.value}
-                  onChange={field.handleChange}
-                />
-              </Field>
-            )}
-          />
-
-          <form.Field
-            name="startDate"
-            children={(field) => (
-              <Field>
-                <FieldLabel htmlFor={field.name}>Startdatum en tijd</FieldLabel>
-                <DateTimePicker
-                  placeholder="Begin van het evenement"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e)}
-                />
-              </Field>
-            )}
-          />
-          <form.Field
-            name="endDate"
-            children={(field) => (
-              <Field>
-                <FieldLabel htmlFor={field.name}>Einddatum en tijd</FieldLabel>
-                <DateTimePicker
-                  placeholder="Einde van het evenement"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e)}
-                />
-              </Field>
-            )}
-          />
-          <form.Field
-            name="location"
-            children={(field) => (
-              <Field>
-                <FieldLabel htmlFor="location">Locatie</FieldLabel>
+                <FieldLabel htmlFor="description">Beschrijving</FieldLabel>
                 <Input
                   autoComplete="off"
-                  placeholder="Locatie van het evenement"
+                  placeholder="Beschrijving van het evenement"
                   value={field.state.value}
                   id={field.name}
                   name={field.name}
