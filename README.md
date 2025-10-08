@@ -1,13 +1,16 @@
 # party-planner
 
-- [] push notifications
+- [ ] push notifications
 - [x] email notifications
 - [x] user accounts
 - [x] shareable links / QR codes
-- [] donate buttons
+- [ ] donate buttons
 - [x] planner interface
 - [x] guest interface
 - [x] tailwind/shadcn/radix
 - [x] share feature
-- [] chatgpt content moderation
-    
+- [ ] chatgpt content moderation
+- [ ] excel/csv import
+- [ ] update invitation & invitees
+- [ ] task list + notifications
+- [ ] co-organising

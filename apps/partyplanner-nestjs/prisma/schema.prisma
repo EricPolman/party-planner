@@ -36,8 +36,8 @@ model Invitation {
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId   String
   code      String @unique
-  startDate   DateTime @default(now())
-  endDate     DateTime? @default(now())
+  startDate   DateTime @default(now()) @db.Timestamptz(3)
+  endDate     DateTime? @default(now()) @db.Timestamptz(3)
   location    String?
   title     String
   message     String
@@ -54,7 +54,7 @@ model Invitee {
   invitation     Invitation    @relation(fields: [invitationId], references: [id], onDelete: Cascade)
   invitationId   String
   status    InviteeStatus @default(PENDING)
-  respondedAt DateTime?
+  respondedAt DateTime? @db.Timestamptz(3)
   comments  String?
 }
 
