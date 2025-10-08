@@ -9,9 +9,11 @@ import { ClerkAuthGuard } from './auth/clerk-auth.guard';
 import { PrismaClient } from 'generated/prisma';
 import { EventsModule } from './events/events.module';
 import { RsvpModule } from './rsvp/rsvp.module';
+import { SentryModule } from '@sentry/nestjs/setup';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ConfigModule.forRoot(),
     AuthModule,
     UsersModule,
