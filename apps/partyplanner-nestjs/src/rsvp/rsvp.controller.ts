@@ -1,4 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import AWS from 'aws-sdk';
+
 import { Invitee, InviteeStatus, PrismaClient } from 'generated/prisma';
 import { Public } from 'src/auth/public.decorator';
 
@@ -46,6 +48,7 @@ export class RsvpController {
         code: invitationCode,
         isActive: true,
       },
+      include: { event: { include: { organisers: true } } },
     });
 
     // Upsert invitee based on email or phone number
@@ -94,6 +97,34 @@ export class RsvpController {
           respondedAt: new Date(),
         },
       });
+    }
+
+    // Send email to organisers about new invitee
+    const recipients = invitation.event.organisers.map((o) => o.email);
+    AWS.config.update({ region: 'us-east-1' });
+    const ses = new AWS.SES({ apiVersion: '2010-12-01' });
+    if (recipients.length > 0) {
+      await ses
+        .sendEmail({
+          Destination: {
+            ToAddresses: recipients,
+          },
+          Message: {
+            Body: {
+              Text: {
+                Data: `${invitee.firstName} ${invitee.lastName} (${invitee.email}, ${invitee.phoneNumber}) voor uitnodiging ${invitation.title}:
+                
+Status: ${invitee.status}     
+Opmerkingen: ${invitee.comments || 'Geen'}`,
+              },
+            },
+            Subject: {
+              Data: `RSVP update voor ${invitation.title} van ${invitee.firstName} ${invitee.lastName}`,
+            },
+          },
+          Source: 'no-reply@jouwfeestjeplannen.nl',
+        })
+        .promise();
     }
   }
 }
