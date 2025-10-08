@@ -11,13 +11,11 @@ export function Header() {
   const router = useRouter();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 bg-gradient-to-r from-purple-700 to-orange-700">
+      <div className="container flex h-16 items-center justify-between gap-4 text-white">
         <Link href="/" className="flex items-center gap-2 md:pl-6">
-          <PartyPopper className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold text-foreground">
-            JouwFeestjePlannen.nl
-          </span>
+          <PartyPopper className="h-6 w-6 text-primary" color="white" />
+          <span className="text-xl font-bold">JouwFeestjePlannen.nl</span>
         </Link>
 
         {isSignedIn ? (
