@@ -10,6 +10,8 @@ import { EventsModule } from './events/events.module';
 import { RsvpModule } from './rsvp/rsvp.module';
 import { SentryModule } from '@sentry/nestjs/setup';
 import { InvitationsModule } from './invitations/invitations.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { CoreModule } from './core/core.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { InvitationsModule } from './invitations/invitations.module';
     EventsModule,
     RsvpModule,
     InvitationsModule,
+    NotificationsModule,
+    CoreModule,
   ],
   controllers: [],
   providers: [

@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { RsvpController } from './rsvp.controller';
-import { PrismaClient } from 'generated/prisma';
+import { NotificationsModule } from 'src/notifications/notifications.module';
+import { CoreModule } from 'src/core/core.module';
 
 @Module({
-  providers: [PrismaClient],
+  imports: [NotificationsModule, CoreModule],
   controllers: [RsvpController],
 })
 export class RsvpModule {}
