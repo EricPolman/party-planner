@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { useRsvpReply } from "@/hooks/useRsvp";
 import { cn } from "@/lib/utils";
 import { InviteeResponseStatus } from "@/types/invitees";
+import { PulseButton } from "./ui/pulse-button";
 
 interface RsvpFormValues {
   email?: string;
@@ -66,7 +67,7 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
   );
 
   return (
-    <div className="max-w-lg mx-auto">
+    <div className="max-w-lg mx-auto px-4 pb-10">
       {rsvpMutation.isSuccess ? (
         <div className="p-4 bg-green-100 text-green-800 rounded space-y-4">
           <h2 className="text-lg font-medium mb-2">Bedankt voor je reactie!</h2>
@@ -90,7 +91,9 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
                 <Field>
                   <FieldLabel htmlFor="status">Aanwezig?</FieldLabel>
                   <div className="space-x-4 grid grid-cols-3">
-                    <Button
+                    <PulseButton
+                      size="lg"
+                      color="bg-green-500"
                       type="button"
                       className={cn("bg-green-500 hover:bg-green-600", {
                         "opacity-50":
@@ -101,9 +104,11 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
                       }
                     >
                       Aanwezig
-                    </Button>
-                    <Button
+                    </PulseButton>
+                    <PulseButton
+                      size="lg"
                       type="button"
+                      color="bg-yellow-500"
                       className={cn("bg-yellow-500 hover:bg-yellow-600", {
                         "opacity-50":
                           field.state.value !== InviteeResponseStatus.MAYBE,
@@ -113,9 +118,11 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
                       }
                     >
                       Misschien
-                    </Button>
-                    <Button
+                    </PulseButton>
+                    <PulseButton
+                      size="lg"
                       type="button"
+                      color="bg-red-500"
                       className={cn("bg-red-500 hover:bg-red-600", {
                         "opacity-50":
                           field.state.value !== InviteeResponseStatus.DECLINED,
@@ -125,7 +132,7 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
                       }
                     >
                       Afwezig
-                    </Button>
+                    </PulseButton>
                   </div>
                 </Field>
               )}
@@ -222,7 +229,12 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
             <form.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
-                <Button type="submit" className="mt-8" disabled={!canSubmit}>
+                <Button
+                  type="submit"
+                  className="mt-8"
+                  disabled={!canSubmit}
+                  size="lg"
+                >
                   {isSubmitting && "..."} Aanwezigheid doorgeven
                 </Button>
               )}

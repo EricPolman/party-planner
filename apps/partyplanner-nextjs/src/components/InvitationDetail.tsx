@@ -18,6 +18,7 @@ import { useRef } from "react";
 import { format } from "date-fns/format";
 import { convert } from "html-to-text";
 import { TelegramIcon, TelegramShareButton } from "react-share";
+import { InvitationCard } from "./InvitationCard";
 
 export function InvitationDetails({
   invitation,
@@ -153,28 +154,15 @@ export function InvitationDetails({
 
       <hr className="my-10" />
       <h1 className="text-2xl mb-4">De uitnodiging</h1>
-      <div ref={invitationRef} className="p-4 border rounded">
-        <h3>{plannerEvent.title}</h3>
-        <div dangerouslySetInnerHTML={{ __html: invitation.message }} />
-        <table>
-          <tbody>
-            <tr>
-              <td className="w-32">🕙 Wanneer?</td>
-              <td>{dateText}</td>
-            </tr>
-            <tr>
-              <td className="w-32">📍 Waar?</td>
-              <td>{invitation.location}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div ref={invitationRef}>
+        <InvitationCard invitation={invitation} />
       </div>
 
       <hr className="my-10" />
       <h1 className="text-2xl mb-4">Deel deze uitnodiging</h1>
       <div className="flex gap-2 mt-4">
         <TelegramShareButton
-          url={`https://jouwfeestjeplannen.nl/rsvp/${invitation.code}`}
+          url={`${window.location.origin}/rsvp/${invitation.code}`}
           title={invitationText}
         >
           <TelegramIcon />

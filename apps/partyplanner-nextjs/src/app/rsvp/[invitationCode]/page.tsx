@@ -1,5 +1,6 @@
+import { InvitationCard } from "@/components/InvitationCard";
 import { RsvpForm } from "@/components/RsvpReplyForm";
-import { fetchRsvpEventByInvitationCode } from "@/hooks/useRsvp";
+import { fetchRsvpInvitationByInvitationCode } from "@/hooks/useRsvp";
 
 // Metadata should include event title if possible
 export async function generateMetadata({
@@ -8,8 +9,8 @@ export async function generateMetadata({
   params: Promise<{ invitationCode: string }>;
 }) {
   const { invitationCode } = await params;
-  const event = await fetchRsvpEventByInvitationCode(invitationCode);
-  return { title: event?.title || "RSVP", description: event?.description };
+  const event = await fetchRsvpInvitationByInvitationCode(invitationCode);
+  return { title: event?.title || "RSVP", description: event?.message };
 }
 
 export default async function RSVPPage({
@@ -19,13 +20,11 @@ export default async function RSVPPage({
 }) {
   const { invitationCode } = await params;
 
-  const event = await fetchRsvpEventByInvitationCode(invitationCode);
+  const invitation = await fetchRsvpInvitationByInvitationCode(invitationCode);
 
   return (
-    <div className="mx-auto space-y-6">
-      <div className="p-4 border rounded">
-        <strong>{event.title}</strong>
-      </div>
+    <div className="mx-auto space-y-6 max-w-xl p-4">
+      <InvitationCard invitation={invitation} />
       <RsvpForm invitationCode={invitationCode} />
     </div>
   );

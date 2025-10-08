@@ -1,19 +1,19 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
-import { PlannerEventListItem } from "@/types/events";
 import { InviteeResponseStatus } from "@/types/invitees";
+import { Invitation } from "@/types/invitations";
 
-export function fetchRsvpEventByInvitationCode(
+export function fetchRsvpInvitationByInvitationCode(
   invitationCode: string
-): Promise<PlannerEventListItem> {
+): Promise<Omit<Invitation, "invitees">> {
   return axiosClient.get(`/rsvp/${invitationCode}`).then((res) => res.data);
 }
 
-export function useRsvpEventById(invitationCode: string) {
+export function useRsvpInvitationById(invitationCode: string) {
   return useQuery({
     queryKey: ["events", invitationCode],
-    queryFn: async (): Promise<PlannerEventListItem> => {
-      return fetchRsvpEventByInvitationCode(invitationCode);
+    queryFn: async (): Promise<Omit<Invitation, "invitees">> => {
+      return fetchRsvpInvitationByInvitationCode(invitationCode);
     },
   });
 }

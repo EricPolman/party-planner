@@ -4,6 +4,7 @@ export interface Invitation {
   id: string;
   eventId: string;
   code: string;
+  title: string;
   message: string;
   isActive: boolean;
   location: string | null;

@@ -9,12 +9,22 @@ export class RsvpController {
   @Get(':invitationCode')
   @Public()
   async getInvitationByCode(@Param('invitationCode') invitationCode: string) {
-    return this.prismaClient.invitation.findUniqueOrThrow({
-      where: {
-        code: invitationCode,
-        isActive: true,
-      },
-    });
+    const { event, ...invitation } =
+      await this.prismaClient.invitation.findUniqueOrThrow({
+        where: {
+          code: invitationCode,
+          isActive: true,
+        },
+        include: {
+          event: { include: { organisers: true } },
+          invitees: false,
+        },
+      });
+
+    return {
+      ...invitation,
+      organisers: event.organisers.map((o) => `${o.firstName} ${o.lastName}`),
+    };
   }
 
   @Post(':invitationCode')
