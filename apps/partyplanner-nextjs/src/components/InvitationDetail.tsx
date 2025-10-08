@@ -20,6 +20,7 @@ import { convert } from "html-to-text";
 import { TelegramIcon, TelegramShareButton } from "react-share";
 import { InvitationCard } from "./InvitationCard";
 import Link from "next/link";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 
 export function InvitationDetails({
   invitation,
@@ -62,50 +63,8 @@ export function InvitationDetails({
     : "";
 
   return (
-    <div className="mx-auto">
+    <div>
       <h1 className="text-2xl mb-4">Gastenlijst</h1>
-      <div className="flex flex-row gap-6 my-4">
-        <div className="flex flex-row gap-2 items-center">
-          <InviteeStatusBadge status={InviteeResponseStatus.ACCEPTED} />
-          <span>
-            {
-              invitation.invitees.filter(
-                (invitee) => invitee.status === InviteeResponseStatus.ACCEPTED
-              ).length
-            }
-          </span>
-        </div>
-        <div className="flex flex-row gap-2 items-center">
-          <InviteeStatusBadge status={InviteeResponseStatus.DECLINED} />
-          <span>
-            {
-              invitation.invitees.filter(
-                (invitee) => invitee.status === InviteeResponseStatus.DECLINED
-              ).length
-            }
-          </span>
-        </div>
-        <div className="flex flex-row gap-2 items-center">
-          <InviteeStatusBadge status={InviteeResponseStatus.MAYBE} />
-          <span>
-            {
-              invitation.invitees.filter(
-                (invitee) => invitee.status === InviteeResponseStatus.MAYBE
-              ).length
-            }
-          </span>
-        </div>
-        <div className="flex flex-row gap-2 items-center">
-          <InviteeStatusBadge status={InviteeResponseStatus.PENDING} />
-          <span>
-            {
-              invitation.invitees.filter(
-                (invitee) => invitee.status === InviteeResponseStatus.PENDING
-              ).length
-            }
-          </span>
-        </div>
-      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -148,10 +107,14 @@ export function InvitationDetails({
           ))}
         </TableBody>
       </Table>
-      <hr className="my-10" />
-      <h1 className="text-2xl mb-4">Gast toevoegen</h1>
-
-      <AddInviteeForm invitationId={invitation.id} />
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="my-4">+ Gast toevoegen</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <AddInviteeForm invitationId={invitation.id} />
+        </DialogContent>
+      </Dialog>
 
       <hr className="my-10" />
       <h1 className="text-2xl mb-4">De uitnodiging</h1>

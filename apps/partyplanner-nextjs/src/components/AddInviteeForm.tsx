@@ -23,10 +23,10 @@ export function AddInviteeForm({ invitationId }: { invitationId: string }) {
   const addInviteeMutation = useAddInvitee();
 
   const initialValues: AddInviteeFormValues = {
-    email: "example@example.com",
-    firstName: "John",
-    lastName: "Doe",
-    phoneNumber: "1234567890",
+    email: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
   };
 
   const form = useForm(
@@ -59,7 +59,7 @@ export function AddInviteeForm({ invitationId }: { invitationId: string }) {
           form.handleSubmit();
         }}
       >
-        <div className="flex flex-row gap-3">
+        <div className="flex flex-col gap-3">
           <form.Field
             name="firstName"
             children={(field) => (
