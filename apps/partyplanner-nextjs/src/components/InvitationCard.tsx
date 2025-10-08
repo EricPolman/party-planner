@@ -8,7 +8,7 @@ export function InvitationCard({
   const dateText = new Date(invitation.startDate).toLocaleString().slice(0, -3);
 
   return (
-    <div className="p-4 border rounded">
+    <div className="p-4 border rounded bg-white">
       <h3 className="font-bold text-lg">{invitation.title}</h3>
       {invitation.organisers && (
         <div className="text-sm text-gray-600 mb-2">

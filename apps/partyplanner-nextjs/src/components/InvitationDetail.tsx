@@ -17,7 +17,12 @@ import { TrashIcon } from "lucide-react";
 import { useRef } from "react";
 import { format } from "date-fns/format";
 import { convert } from "html-to-text";
-import { TelegramIcon, TelegramShareButton } from "react-share";
+import {
+  TelegramIcon,
+  TelegramShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from "react-share";
 import { InvitationCard } from "./InvitationCard";
 import Link from "next/link";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
@@ -64,7 +69,7 @@ export function InvitationDetails({
 
   return (
     <div>
-      <h1 className="text-2xl mb-4">Gastenlijst</h1>
+      <h1 className="text-lg mb-4">Gastenlijst</h1>
       <Table>
         <TableHeader>
           <TableRow>
@@ -116,29 +121,33 @@ export function InvitationDetails({
         </DialogContent>
       </Dialog>
 
-      <hr className="my-10" />
-      <h1 className="text-2xl mb-4">De uitnodiging</h1>
+      <hr className="my-5" />
+      <h1 className="text-lg mb-4">De uitnodiging</h1>
       <div ref={invitationRef}>
         <InvitationCard invitation={invitation} />
       </div>
-
-      <hr className="my-10" />
-      <h1 className="text-2xl mb-4">Deel deze uitnodiging</h1>
-      <div className="flex gap-2 mt-4">
+      <div className="flex gap-2 my-4">
+        <WhatsappShareButton
+          url={`${window.location.origin}/rsvp/${invitation.code}`}
+          title={invitationText}
+        >
+          <WhatsappIcon className="rounded w-8 h-8" />
+        </WhatsappShareButton>
         <TelegramShareButton
           url={`${window.location.origin}/rsvp/${invitation.code}`}
           title={invitationText}
         >
-          <TelegramIcon />
+          <TelegramIcon className="rounded w-8 h-8" />
         </TelegramShareButton>
         <Link
           href={`/rsvp/${invitation.code}`}
           target="_blank"
           rel="noreferrer"
         >
-          <Button>Bekijk uitnodiging</Button>
+          <Button variant="outline">Bekijk uitnodiging</Button>
         </Link>
         <Button
+          variant="outline"
           onClick={() =>
             navigator.clipboard.writeText(
               `${window.location.origin}/rsvp/${invitation.code}`
