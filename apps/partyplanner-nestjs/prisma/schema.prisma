@@ -58,6 +58,16 @@ model Invitee {
   comments  String?
 }
 
+model InviteeNotification {
+  id        String   @default(uuid()) @id
+  eventId   String
+  invitationId String
+  inviteeId String
+  sentAt DateTime? @db.Timestamptz(3)
+  status  String @default("PENDING")
+  errorMessage String?
+}
+
 enum InviteeStatus {
   PENDING
   ACCEPTED

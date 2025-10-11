@@ -106,7 +106,7 @@ export class RsvpService {
     }
 
     // Notify organisers about new RSVP
-    await this.notificationsService.sendRsvpNotificationEmail(
+    await this.notificationsService.sendInviteeNotification(
       invitation,
       invitee,
     );
