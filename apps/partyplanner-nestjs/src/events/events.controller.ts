@@ -6,13 +6,15 @@ import {
   Param,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
-import { PrismaClient } from 'generated/prisma';
 import { type Request } from 'express';
+import { EventOrganiserGuard } from 'src/core/event-organiser.guard';
+import { EventsService } from './events.service';
 
 @Controller('events')
 export class EventsController {
-  constructor(private readonly prismaClient: PrismaClient) {}
+  constructor(private readonly eventsService: EventsService) {}
 
   @Post()
   async createEvent(
@@ -23,73 +25,32 @@ export class EventsController {
       description: string;
     },
   ) {
-    const event = await this.prismaClient.event.create({
-      data: {
-        title: body.title,
-        description: body.description,
-        organisers: { connect: { id: request.user.id } },
-      },
+    return this.eventsService.create({
+      ...body,
+      userId: request.user.id,
     });
-    return event;
   }
 
   @Delete(':eventId')
+  @UseGuards(EventOrganiserGuard)
   async deleteEvent(
     @Req() request: Request,
     @Param('eventId') eventId: string,
   ) {
-    const event = await this.prismaClient.event.findUniqueOrThrow({
-      where: {
-        id: eventId,
-        organisers: {
-          some: {
-            id: { equals: request.user.id },
-          },
-        },
-      },
-    });
-    if (!event) {
-      throw new Error('Event not found');
-    }
-
-    await this.prismaClient.event.delete({
-      where: {
-        id: eventId,
-      },
+    return this.eventsService.delete({
+      eventId,
+      userId: request.user.id,
     });
   }
 
   @Get()
   async getEvents(@Req() request: Request) {
-    const events = await this.prismaClient.event.findMany({
-      where: {
-        organisers: {
-          some: {
-            id: { equals: request.user.id },
-          },
-        },
-      },
-    });
-    return events;
+    return this.eventsService.getEvents(request.user.id);
   }
 
   @Get(':eventId')
-  async getEventById(
-    @Req() request: Request,
-    @Param('eventId') eventId: string,
-  ) {
-    const event = await this.prismaClient.event.findUniqueOrThrow({
-      where: {
-        id: eventId,
-        organisers: {
-          some: {
-            id: { equals: request.user.id },
-          },
-        },
-      },
-      include: { invitations: true },
-    });
-
-    return event;
+  @UseGuards(EventOrganiserGuard)
+  async getEventById(@Param('eventId') eventId: string) {
+    return this.eventsService.getEventById(eventId);
   }
 }

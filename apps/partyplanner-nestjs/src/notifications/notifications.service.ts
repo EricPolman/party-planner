@@ -8,6 +8,7 @@ export class NotificationsService {
   constructor(private readonly prismaClient: PrismaClient) {}
 
   async sendRsvpNotificationEmail(invitation: Invitation, invitee: Invitee) {
+    // TODO: Transactional outbox
     const event = await this.prismaClient.event.findUniqueOrThrow({
       where: { id: invitation.eventId },
       include: { organisers: true },

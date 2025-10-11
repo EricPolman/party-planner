@@ -7,17 +7,23 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { type Request } from 'express';
 import { PrismaClient } from 'generated/prisma';
+import { InvitationsService } from './invitations.service';
+import { EventOrganiserGuard } from 'src/core/event-organiser.guard';
 
 @Controller('invitations')
 export class InvitationsController {
-  constructor(private readonly prismaClient: PrismaClient) {}
+  constructor(
+    private readonly invitationsService: InvitationsService,
+    private readonly prismaClient: PrismaClient,
+  ) {}
 
   @Post()
+  @UseGuards(EventOrganiserGuard)
   async createInvitation(
-    @Req() request: Request,
     @Body()
     body: {
       eventId: string;
@@ -30,31 +36,13 @@ export class InvitationsController {
   ) {
     const { eventId, title, message, startDate, endDate, location } = body;
 
-    // Check if the user is an organiser of the event
-    // If not, throw an error
-    // If yes, create the invitation
-    const event = await this.prismaClient.event.findUniqueOrThrow({
-      where: {
-        id: eventId,
-        organisers: {
-          some: {
-            id: { equals: request.user.id },
-          },
-        },
-      },
-    });
-
-    return this.prismaClient.invitation.create({
-      data: {
-        code: crypto.randomUUID().split('-')[0],
-        title,
-        message,
-        isActive: true,
-        location,
-        endDate,
-        startDate,
-        event: { connect: { id: event.id } },
-      },
+    return this.invitationsService.create({
+      eventId,
+      title,
+      message,
+      startDate,
+      endDate,
+      location,
     });
   }
 
@@ -63,23 +51,9 @@ export class InvitationsController {
     @Req() request: Request,
     @Param('invitationId') invitationId: string,
   ) {
-    await this.prismaClient.invitation.findUniqueOrThrow({
-      where: {
-        id: invitationId,
-        event: {
-          organisers: {
-            some: {
-              id: { equals: request.user.id },
-            },
-          },
-        },
-      },
-    });
-
-    await this.prismaClient.invitation.delete({
-      where: {
-        id: invitationId,
-      },
+    return this.invitationsService.delete({
+      invitationId,
+      userId: request.user.id,
     });
   }
 
@@ -88,25 +62,14 @@ export class InvitationsController {
     @Req() request: Request,
     @Query('eventId') eventId: string,
   ) {
-    const invitations = await this.prismaClient.invitation.findMany({
-      where: {
-        event: {
-          id: { equals: eventId },
-          organisers: {
-            some: {
-              id: { equals: request.user.id },
-            },
-          },
-        },
-      },
-      include: { invitees: true },
+    return this.invitationsService.getByEventId({
+      eventId,
     });
-    return invitations;
   }
 
   @Post(':invitationId/invitees')
+  @UseGuards(EventOrganiserGuard)
   async addInvitee(
-    @Req() request: Request,
     @Param('invitationId') invitationId: string,
     @Body()
     body: {
@@ -119,13 +82,6 @@ export class InvitationsController {
     const invitation = await this.prismaClient.invitation.findUniqueOrThrow({
       where: {
         id: invitationId,
-        event: {
-          organisers: {
-            some: {
-              id: { equals: request.user.id },
-            },
-          },
-        },
       },
     });
 
