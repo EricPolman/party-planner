@@ -12,7 +12,7 @@ import {
 import { AddInviteeForm } from "@/components/AddInviteeForm";
 import { Button } from "@/components/ui/button";
 import { useRemoveInvitee } from "@/hooks/useCreateEvent";
-import { TrashIcon } from "lucide-react";
+import { QrCodeIcon, TrashIcon } from "lucide-react";
 import { useRef } from "react";
 import { convert } from "html-to-text";
 import {
@@ -59,6 +59,8 @@ export function InvitationDetails({ invitation }: { invitation: Invitation }) {
         ],
       })
     : "";
+
+  const rsvpUrl = `${window.location.origin}/rsvp/${invitation.code}`;
 
   return (
     <div>
@@ -119,19 +121,28 @@ export function InvitationDetails({ invitation }: { invitation: Invitation }) {
       <div ref={invitationRef}>
         <InvitationCard invitation={invitation} />
       </div>
-      <div className="flex gap-2 my-4">
-        <WhatsappShareButton
-          url={`${window.location.origin}/rsvp/${invitation.code}`}
-          title={invitationText}
-        >
+      <div className="md:flex md:flex-row gap-2 md:my-4 space-y-3 mt-4 mb-8">
+        <WhatsappShareButton url={rsvpUrl} title={invitationText}>
           <WhatsappIcon className="rounded w-8 h-8" />
         </WhatsappShareButton>
-        <TelegramShareButton
-          url={`${window.location.origin}/rsvp/${invitation.code}`}
-          title={invitationText}
-        >
+        <TelegramShareButton url={rsvpUrl} title={invitationText}>
           <TelegramIcon className="rounded w-8 h-8" />
         </TelegramShareButton>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">
+              <QrCodeIcon />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <div className="flex flex-col items-center">
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${rsvpUrl}`}
+                alt="QR Code"
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
         <Link
           href={`/rsvp/${invitation.code}`}
           target="_blank"

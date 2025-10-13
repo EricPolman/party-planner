@@ -29,8 +29,8 @@ function InvitationListItem({ invitation }: { invitation: Invitation }) {
           </span>
         </h2>
         <div>
-          <div className="flex flex-col md:flex-row gap-6 my-4 text-sm md:text-base">
-            <div className="flex flex-row gap-2 items-center">
+          <div className="md:flex md:flex-row md:gap-6 my-4 space-y-3 space-x-3 text-sm md:text-base">
+            <div className="inline-block md:flex flex-row gap-2 items-center">
               <InviteeStatusBadge status={InviteeResponseStatus.ACCEPTED} />
               <span>
                 {
@@ -41,7 +41,7 @@ function InvitationListItem({ invitation }: { invitation: Invitation }) {
                 }
               </span>
             </div>
-            <div className="flex flex-row gap-2 items-center">
+            <div className="inline-block md:flex flex-row gap-2 items-center">
               <InviteeStatusBadge status={InviteeResponseStatus.DECLINED} />
               <span>
                 {
@@ -52,7 +52,7 @@ function InvitationListItem({ invitation }: { invitation: Invitation }) {
                 }
               </span>
             </div>
-            <div className="flex flex-row gap-2 items-center">
+            <div className="inline-block md:flex flex-row gap-2 items-center">
               <InviteeStatusBadge status={InviteeResponseStatus.MAYBE} />
               <span>
                 {
@@ -62,7 +62,7 @@ function InvitationListItem({ invitation }: { invitation: Invitation }) {
                 }
               </span>
             </div>
-            <div className="flex flex-row gap-2 items-center">
+            <div className="inline-block md:flex flex-row gap-2 items-center">
               <InviteeStatusBadge status={InviteeResponseStatus.PENDING} />
               <span>
                 {
