@@ -9,20 +9,25 @@ import { InviteeStatusBadge } from "./InviteeStatusBadge";
 import { InviteeResponseStatus } from "@/types/invitees";
 import { ChevronDown } from "lucide-react";
 import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
-function InvitationListItem({
-  invitation,
-  plannerEvent,
-}: {
-  invitation: Invitation;
-  plannerEvent: PlannerEvent;
-}) {
+function InvitationListItem({ invitation }: { invitation: Invitation }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="w-full border rounded px-4 flex flex-col bg-slate-50">
+    <div
+      className={cn(
+        "w-full border rounded px-4 flex flex-col",
+        isExpanded && "bg-slate-50"
+      )}
+    >
       <div className="flex flex-col md:flex-row items-start justify-between md:items-center">
-        <h2 className="text-xl font-semibold mb-2">{invitation.title}</h2>
+        <h2 className="text-xl font-semibold mb-2">
+          {invitation.title}{" "}
+          <span className="text-sm text-muted-foreground ml-3 italic">
+            {invitation.isActive ? "Open" : "Gesloten"}
+          </span>
+        </h2>
         <div>
           <div className="flex flex-col md:flex-row gap-6 my-4 text-sm md:text-base">
             <div className="flex flex-row gap-2 items-center">
@@ -82,12 +87,7 @@ function InvitationListItem({
           </div>
         </div>
       </div>
-      {isExpanded && (
-        <InvitationDetails
-          invitation={invitation}
-          plannerEvent={plannerEvent}
-        />
-      )}
+      {isExpanded && <InvitationDetails invitation={invitation} />}
     </div>
   );
 }
@@ -118,11 +118,7 @@ export function InvitationsList({
   return (
     <div className="flex flex-col w-full mb-3">
       {invitations.map((invitation) => (
-        <InvitationListItem
-          key={invitation.id}
-          invitation={invitation}
-          plannerEvent={plannerEvent}
-        />
+        <InvitationListItem key={invitation.id} invitation={invitation} />
       ))}
     </div>
   );

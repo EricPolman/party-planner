@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   Req,
   UseGuards,
@@ -58,10 +59,7 @@ export class InvitationsController {
   }
 
   @Get()
-  async getInvitations(
-    @Req() request: Request,
-    @Query('eventId') eventId: string,
-  ) {
+  async getInvitations(@Query('eventId') eventId: string) {
     return this.invitationsService.getByEventId({
       eventId,
     });
@@ -124,6 +122,17 @@ export class InvitationsController {
         id: inviteeId,
         invitationId: invitation.id,
       },
+    });
+  }
+
+  @Put(':invitationId/isActive')
+  async updateInvitationStatus(
+    @Param('invitationId') invitationId: string,
+    @Body() body: { isActive: boolean },
+  ) {
+    return this.invitationsService.update({
+      invitationId,
+      data: { isActive: body.isActive },
     });
   }
 }

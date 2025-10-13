@@ -12,7 +12,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 bg-gradient-to-r from-purple-700 to-orange-700">
-      <div className="container flex h-16 items-center justify-between gap-4 text-white">
+      <div className="container flex flex-col md:flex-row min-h-16 items-center justify-between gap-4 text-white py-2">
         <Link href="/" className="flex items-center gap-2 md:pl-6">
           <PartyPopper className="h-6 w-6 text-primary" color="white" />
           <span className="text-xl font-bold">JouwFeestjePlannen.nl</span>

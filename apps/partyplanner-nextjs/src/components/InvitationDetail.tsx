@@ -1,7 +1,6 @@
 import { PlannerEvent } from "@/types/events";
 import { Invitation } from "@/types/invitations";
 import { InviteeStatusBadge } from "./InviteeStatusBadge";
-import { InviteeResponseStatus } from "@/types/invitees";
 import {
   Table,
   TableBody,
@@ -15,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { useRemoveInvitee } from "@/hooks/useCreateEvent";
 import { TrashIcon } from "lucide-react";
 import { useRef } from "react";
-import { format } from "date-fns/format";
 import { convert } from "html-to-text";
 import {
   TelegramIcon,
@@ -26,23 +24,18 @@ import {
 import { InvitationCard } from "./InvitationCard";
 import Link from "next/link";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Switch } from "./ui/switch";
+import { useToggleInvitationActive } from "@/hooks/useInvitations";
 
-export function InvitationDetails({
-  invitation,
-  plannerEvent,
-}: {
-  invitation: Invitation;
-  plannerEvent: PlannerEvent;
-}) {
+export function InvitationDetails({ invitation }: { invitation: Invitation }) {
   const invitationRef = useRef<HTMLDivElement>(null);
 
   const removeInviteeMutation = useRemoveInvitee();
+  const toggleInvitationActiveMutation = useToggleInvitationActive();
 
   const handleRemoveInvitee = (inviteeId: string) => {
     removeInviteeMutation.mutate({ invitationId: invitation.id, inviteeId });
   };
-
-  const dateText = format(new Date(invitation.startDate), "PPpp");
 
   const invitationText = invitationRef.current
     ? convert(invitationRef.current.innerHTML, {
@@ -156,6 +149,18 @@ export function InvitationDetails({
         >
           Kopieer link
         </Button>
+        <div className="flex items-center gap-2">
+          <Switch
+            checked={invitation.isActive}
+            onCheckedChange={(checked) =>
+              toggleInvitationActiveMutation.mutate({
+                eventId: invitation.id,
+                isActive: checked,
+              })
+            }
+          />{" "}
+          Aanmeldingen accepteren
+        </div>
       </div>
     </div>
   );

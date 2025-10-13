@@ -71,6 +71,19 @@ export class InvitationsService {
     });
   }
 
+  async update({
+    invitationId,
+    data,
+  }: {
+    invitationId: string;
+    data: Partial<Invitation>;
+  }) {
+    return this.prismaClient.invitation.update({
+      where: { id: invitationId },
+      data,
+    });
+  }
+
   //   async addInvitee({
   //     invitationId,
   //     userId,

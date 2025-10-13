@@ -5,11 +5,9 @@ import { formOptions, useForm } from "@tanstack/react-form";
 import { Field, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { TiptapEditor } from "./ui/editor";
 import { DateTimePicker } from "./ui/datetime-picker";
-import { useCreateInvitation } from "@/hooks/useCreateEvent";
-import Markdown from "react-markdown";
 import { MarkdownEditor } from "./ui/markdown-editor";
+import { useCreateInvitation } from "@/hooks/useInvitations";
 
 interface CreateEventFormValues {
   title: string;

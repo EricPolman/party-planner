@@ -31,41 +31,6 @@ export function useCreateEvent() {
     },
   });
 }
-export function useCreateInvitation() {
-  const { getToken } = useAuth();
-  const queryClient = useQueryClient();
-
-  // Add your custom logic here
-  return useMutation({
-    mutationFn: async (newEvent: {
-      eventId: string;
-      title: string;
-      message: string;
-      startDate: Date;
-      endDate: Date;
-      location: string;
-    }) => {
-      const token = await getToken();
-
-      const response = await axiosClient.post<PlannerEvent>(
-        `invitations`,
-        newEvent,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      return response.data;
-    },
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["invitations"] });
-      queryClient.invalidateQueries({ queryKey: ["events"] });
-    },
-  });
-}
 
 export function useAddInvitee() {
   const { getToken } = useAuth();
