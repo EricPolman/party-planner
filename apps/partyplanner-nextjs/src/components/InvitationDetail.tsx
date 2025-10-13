@@ -13,7 +13,7 @@ import { AddInviteeForm } from "@/components/AddInviteeForm";
 import { Button } from "@/components/ui/button";
 import { useRemoveInvitee } from "@/hooks/useCreateEvent";
 import { QrCodeIcon, TrashIcon } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { convert } from "html-to-text";
 import {
   TelegramIcon,
@@ -28,6 +28,7 @@ import { Switch } from "./ui/switch";
 import { useToggleInvitationActive } from "@/hooks/useInvitations";
 
 export function InvitationDetails({ invitation }: { invitation: Invitation }) {
+  const [isAddInviteeDialogOpen, setIsAddInviteeDialogOpen] = useState(false);
   const invitationRef = useRef<HTMLDivElement>(null);
 
   const removeInviteeMutation = useRemoveInvitee();
@@ -107,12 +108,21 @@ export function InvitationDetails({ invitation }: { invitation: Invitation }) {
           ))}
         </TableBody>
       </Table>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="my-4">+ Gast toevoegen</Button>
-        </DialogTrigger>
+      <Dialog
+        open={isAddInviteeDialogOpen}
+        onOpenChange={setIsAddInviteeDialogOpen}
+      >
+        <Button
+          className="my-4"
+          onClick={() => setIsAddInviteeDialogOpen(true)}
+        >
+          + Gast toevoegen
+        </Button>
         <DialogContent>
-          <AddInviteeForm invitationId={invitation.id} />
+          <AddInviteeForm
+            invitationId={invitation.id}
+            onClose={() => setIsAddInviteeDialogOpen(false)}
+          />
         </DialogContent>
       </Dialog>
 

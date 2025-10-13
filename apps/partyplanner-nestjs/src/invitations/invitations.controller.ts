@@ -14,6 +14,7 @@ import { type Request } from 'express';
 import { PrismaClient } from 'generated/prisma';
 import { InvitationsService } from './invitations.service';
 import { EventOrganiserGuard } from 'src/core/event-organiser.guard';
+import { InvitationOrganiserGuard } from 'src/core/invitation-organiser.guard';
 
 @Controller('invitations')
 export class InvitationsController {
@@ -66,9 +67,9 @@ export class InvitationsController {
   }
 
   @Post(':invitationId/invitees')
-  @UseGuards(EventOrganiserGuard)
+  @UseGuards(InvitationOrganiserGuard)
   async addInvitee(
-    @Param('invitationId') invitationId: string,
+    @Req() request: Request,
     @Body()
     body: {
       email?: string;
@@ -77,51 +78,22 @@ export class InvitationsController {
       lastName?: string;
     },
   ) {
-    const invitation = await this.prismaClient.invitation.findUniqueOrThrow({
-      where: {
-        id: invitationId,
-      },
+    const invitation = request.invitation;
+
+    return this.invitationsService.addInvitee({
+      invitation,
+      data: body,
     });
-
-    const inviteeData = {
-      email: body.email,
-      phoneNumber: body.phoneNumber,
-      firstName: body.firstName,
-      lastName: body.lastName,
-      invitation: { connect: { id: invitation.id } },
-    };
-
-    const invitee = await this.prismaClient.invitee.create({
-      data: inviteeData,
-    });
-
-    return invitee;
   }
 
   @Delete(':invitationId/invitees/:inviteeId')
   async removeInvitee(
     @Req() request: Request,
-    @Param('invitationId') invitationId: string,
     @Param('inviteeId') inviteeId: string,
   ) {
-    const invitation = await this.prismaClient.invitation.findUniqueOrThrow({
-      where: {
-        id: invitationId,
-        event: {
-          organisers: {
-            some: {
-              id: { equals: request.user.id },
-            },
-          },
-        },
-      },
-    });
-
-    await this.prismaClient.invitee.deleteMany({
-      where: {
-        id: inviteeId,
-        invitationId: invitation.id,
-      },
+    await this.invitationsService.removeInvitee({
+      invitation: request.invitation,
+      inviteeId,
     });
   }
 

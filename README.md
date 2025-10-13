@@ -14,3 +14,4 @@
 - [ ] update invitation & invitees
 - [ ] task list + notifications
 - [ ] co-organising
+- [ ] request input validation

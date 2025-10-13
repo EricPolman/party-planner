@@ -19,7 +19,13 @@ const addInviteeSchema = z.object({
   phoneNumber: z.string().min(10).optional(),
 })
 
-export function AddInviteeForm({ invitationId }: { invitationId: string }) {
+export function AddInviteeForm({
+  invitationId,
+  onClose,
+}: {
+  invitationId: string;
+  onClose: () => void;
+}) {
   const addInviteeMutation = useAddInvitee();
 
   const initialValues: AddInviteeFormValues = {
@@ -46,6 +52,7 @@ export function AddInviteeForm({ invitationId }: { invitationId: string }) {
         });
 
         formApi.reset();
+        onClose();
       },
     })
   );

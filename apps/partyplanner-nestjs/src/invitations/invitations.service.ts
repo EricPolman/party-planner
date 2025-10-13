@@ -84,35 +84,43 @@ export class InvitationsService {
     });
   }
 
-  //   async addInvitee({
-  //     invitationId,
-  //     userId,
-  //     data,
-  //   }: {
-  //     invitationId: string;
-  //     userId: string;
-  //     data: {
-  //       email?: string;
-  //       phoneNumber?: string;
-  //       firstName?: string;
-  //       lastName?: string;
-  //     };
-  //   }) {
-  //     // First check if the user is an organiser of the event
-  //     // If not, throw an error
-  //     // If yes, add the invitee
+  async addInvitee({
+    invitation,
+    data,
+  }: {
+    invitation: Invitation;
+    data: {
+      email?: string;
+      phoneNumber?: string;
+      firstName?: string;
+      lastName?: string;
+    };
+  }) {
+    const inviteeData = {
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      invitation: { connect: { id: invitation.id } },
+    };
 
-  //     const invitation = await this.prismaClient.invitation.findUniqueOrThrow({
-  //       where: {
-  //         id: invitationId,
-  //         event: {
-  //           organisers: {
-  //             some: {
-  //               id: { equals: userId },
-  //             },
-  //           },
-  //         },
-  //       },
-  //     });
-  //   }
+    return this.prismaClient.invitee.create({
+      data: inviteeData,
+    });
+  }
+
+  async removeInvitee({
+    invitation,
+    inviteeId,
+  }: {
+    invitation: Invitation;
+    inviteeId: string;
+  }) {
+    await this.prismaClient.invitee.deleteMany({
+      where: {
+        id: inviteeId,
+        invitationId: invitation.id,
+      },
+    });
+  }
 }
