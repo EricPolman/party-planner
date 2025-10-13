@@ -11,17 +11,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { type Request } from 'express';
-import { PrismaClient } from 'generated/prisma';
 import { InvitationsService } from './invitations.service';
 import { EventOrganiserGuard } from 'src/core/event-organiser.guard';
 import { InvitationOrganiserGuard } from 'src/core/invitation-organiser.guard';
 
 @Controller('invitations')
 export class InvitationsController {
-  constructor(
-    private readonly invitationsService: InvitationsService,
-    private readonly prismaClient: PrismaClient,
-  ) {}
+  constructor(private readonly invitationsService: InvitationsService) {}
 
   @Post()
   @UseGuards(EventOrganiserGuard)
