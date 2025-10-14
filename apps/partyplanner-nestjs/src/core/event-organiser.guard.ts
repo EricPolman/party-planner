@@ -8,7 +8,7 @@ export class EventOrganiserGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request: Request = context.switchToHttp().getRequest();
-    const eventId = request.params.eventId;
+    const eventId = request.params.eventId ?? request.body.eventId;
     const userId = request.user?.id;
 
     if (!eventId) {
