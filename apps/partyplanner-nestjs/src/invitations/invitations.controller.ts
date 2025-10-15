@@ -14,6 +14,7 @@ import { type Request } from 'express';
 import { InvitationsService } from './invitations.service';
 import { EventOrganiserGuard } from 'src/core/event-organiser.guard';
 import { InvitationOrganiserGuard } from 'src/core/invitation-organiser.guard';
+import { uniq } from 'lodash';
 
 @Controller('invitations')
 export class InvitationsController {
@@ -68,20 +69,24 @@ export class InvitationsController {
     @Req() request: Request,
     @Body()
     body: {
-      email?: string;
-      phoneNumber?: string;
-      name: string;
+      names: string;
     },
   ) {
     const invitation = request.invitation;
 
-    return this.invitationsService.addInvitee({
+    const cleanedNames = uniq(body.names
+      .split(",")
+      .map((name) => name.trim())
+      .filter((name) => name.length > 0));
+      
+    return this.invitationsService.addInvitees({
       invitation,
-      data: body,
+      data: { names: cleanedNames },
     });
   }
 
   @Delete(':invitationId/invitees/:inviteeId')
+  @UseGuards(InvitationOrganiserGuard)
   async removeInvitee(
     @Req() request: Request,
     @Param('inviteeId') inviteeId: string,

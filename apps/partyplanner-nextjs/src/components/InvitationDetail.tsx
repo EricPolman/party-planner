@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AddInviteeForm } from "@/components/AddInviteeForm";
+import { AddInviteesForm } from "@/components/AddInviteesForm";
 import { Button } from "@/components/ui/button";
 import { useRemoveInvitee } from "@/hooks/useCreateEvent";
 import { QrCodeIcon, TrashIcon } from "lucide-react";
@@ -28,7 +28,7 @@ import { Switch } from "./ui/switch";
 import { useToggleInvitationActive } from "@/hooks/useInvitations";
 
 export function InvitationDetails({ invitation }: { invitation: Invitation }) {
-  const [isAddInviteeDialogOpen, setIsAddInviteeDialogOpen] = useState(false);
+  const [isAddInviteesDialogOpen, setIsAddInviteesDialogOpen] = useState(false);
   const invitationRef = useRef<HTMLDivElement>(null);
 
   const removeInviteeMutation = useRemoveInvitee();
@@ -71,8 +71,6 @@ export function InvitationDetails({ invitation }: { invitation: Invitation }) {
           <TableRow>
             <TableHead className="w-[100px]">Gastenlijst</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>E-mailadres</TableHead>
-            <TableHead>Telefoonnummer</TableHead>
             <TableHead>Opmerkingen</TableHead>
             <TableHead>Gereageerd op</TableHead>
             <TableHead></TableHead>
@@ -87,8 +85,6 @@ export function InvitationDetails({ invitation }: { invitation: Invitation }) {
               <TableCell>
                 <InviteeStatusBadge status={invitee.status} />
               </TableCell>
-              <TableCell>{invitee.email}</TableCell>
-              <TableCell>{invitee.phoneNumber}</TableCell>
               <TableCell>{invitee.comments}</TableCell>
               <TableCell>
                 {invitee.respondedAt
@@ -109,19 +105,19 @@ export function InvitationDetails({ invitation }: { invitation: Invitation }) {
         </TableBody>
       </Table>
       <Dialog
-        open={isAddInviteeDialogOpen}
-        onOpenChange={setIsAddInviteeDialogOpen}
+        open={isAddInviteesDialogOpen}
+        onOpenChange={setIsAddInviteesDialogOpen}
       >
         <Button
           className="my-4"
-          onClick={() => setIsAddInviteeDialogOpen(true)}
+          onClick={() => setIsAddInviteesDialogOpen(true)}
         >
           + Gasten toevoegen
         </Button>
         <DialogContent>
-          <AddInviteeForm
+          <AddInviteesForm
             invitationId={invitation.id}
-            onClose={() => setIsAddInviteeDialogOpen(false)}
+            onClose={() => setIsAddInviteesDialogOpen(false)}
           />
         </DialogContent>
       </Dialog>

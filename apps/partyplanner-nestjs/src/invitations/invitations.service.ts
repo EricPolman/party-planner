@@ -84,27 +84,23 @@ export class InvitationsService {
     });
   }
 
-  async addInvitee({
+  async addInvitees({
     invitation,
     data,
   }: {
     invitation: Invitation;
     data: {
-      email?: string;
-      phoneNumber?: string;
-      name: string;
+      names: string[];
     };
   }) {
-    const inviteeData = {
-      email: data.email,
-      phoneNumber: data.phoneNumber,
-      name: data.name,
+    const inviteesData = data.names.map(name => ({
+      name: name,
       invitation: { connect: { id: invitation.id } },
-    };
-
-    return this.prismaClient.invitee.create({
-      data: inviteeData,
-    });
+    }));
+    const invitees = await Promise.all(
+      inviteesData.map(inviteeData => this.prismaClient.invitee.create({ data: inviteeData }))
+    );
+    return invitees;
   }
 
   async removeInvitee({

@@ -68,7 +68,11 @@ export class RsvpService {
     };
 
     let invitee: Invitee | null = null;
-    if (data.email) {
+    if (data.name) {
+      invitee = await this.prismaClient.invitee.findFirst({
+        where: { name: { equals: data.name } },
+      });
+    } else if (data.email) {
       invitee = await this.prismaClient.invitee.findFirst({
         where: { email: { equals: data.email } },
       });

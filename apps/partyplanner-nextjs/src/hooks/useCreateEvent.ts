@@ -32,21 +32,21 @@ export function useCreateEvent() {
   });
 }
 
-export function useAddInvitee() {
+export function useAddInvitees() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (newInvitee: {
+    mutationFn: async (newInvitees: {
       invitationId: string;
-      email?: string;
-      name: string;
-      phoneNumber?: string;
+      names: string;
     }) => {
       const token = await getToken();
       const response = await axiosClient.post(
-        `/invitations/${newInvitee.invitationId}/invitees`,
-        newInvitee,
+        `/invitations/${newInvitees.invitationId}/invitees`,
+        {
+          names: newInvitees.names,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
