@@ -14,6 +14,7 @@ export class EventsService {
           },
         },
       },
+      include: { organisers: true },
     });
   }
 
@@ -49,5 +50,29 @@ export class EventsService {
         },
       },
     });
+  }
+
+  async addOrganiser(data: { eventId: string; email: string }) {
+    const { eventId, email } = data;
+
+    const user = await this.prismaClient.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      return;
+    }
+
+    await this.prismaClient.event.update({
+      where: { id: eventId },
+      data: {
+        organisers: {
+          connect: { id: user.id },
+        },
+      },
+      include: { organisers: true },
+    });
+
+    return user;
   }
 }

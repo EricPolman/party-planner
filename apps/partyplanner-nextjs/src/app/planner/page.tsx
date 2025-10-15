@@ -1,11 +1,15 @@
 "use client";
 
+import { AddEventOrganiserForm } from "@/components/AddEventOrganiserForm";
 import { CreateEventForm } from "@/components/CreateEventForm";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { usePlannerEvents } from "@/hooks/useEvents";
+import { useState } from "react";
 
 export default function PlannerPage() {
   const { data } = usePlannerEvents();
+  const [eventToAddOrganiser, setEventToAddOrganiser] = useState<string | null>(null);
 
   return (
     <div>
@@ -24,6 +28,18 @@ export default function PlannerPage() {
           >
             <h2 className="text-xl font-bold mb-2">{event.title}</h2>
             <p className="text-gray-600 mb-1">{event.description}</p>
+            <p className="italic text-sm mb-1">Organisatoren: {event.organisers.map((org) => `${org.firstName} ${org.lastName}`).join(", ")}
+            </p>
+            <Dialog open={eventToAddOrganiser === event.id} onOpenChange={(open) => !open && setEventToAddOrganiser(null)}>
+              <Button variant="link" size="sm" onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setEventToAddOrganiser(event.id)
+              }}>+ Organisator toevoegen</Button>
+              <DialogContent>
+                <AddEventOrganiserForm eventId={event.id} onClose={() => setEventToAddOrganiser(null)} />
+              </DialogContent>
+            </Dialog>
           </a>
         ))}
         <Dialog>

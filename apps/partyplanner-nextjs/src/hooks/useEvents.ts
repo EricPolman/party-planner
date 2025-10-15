@@ -28,7 +28,7 @@ export function usePlannerEvents() {
 
   return useQuery({
     queryKey: ["events"],
-    queryFn: async (): Promise<Array<PlannerEventListItem>> => {
+    queryFn: async (): Promise<Array<PlannerEventListItem & { organisers: Array<{ firstName: string; lastName: string; email: string; }> }> > => {
       const token = await getToken();
       if (!token) {
         throw new Error("No token found");

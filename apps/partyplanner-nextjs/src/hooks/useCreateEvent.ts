@@ -32,6 +32,36 @@ export function useCreateEvent() {
   });
 }
 
+export function useAddEventOrganiser() {
+  const { getToken } = useAuth();
+  const queryClient = useQueryClient();
+
+  // Add your custom logic here
+  return useMutation({
+    mutationFn: async (params: { eventId: string; email: string }) => {
+      const token = await getToken();
+
+      const response = await axiosClient.post(
+        `/events/${params.eventId}/organisers`,
+        {
+          email: params.email,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+    },
+  });
+}
+
 export function useAddInvitees() {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();

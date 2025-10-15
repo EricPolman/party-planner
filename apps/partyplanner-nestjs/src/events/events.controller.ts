@@ -31,6 +31,21 @@ export class EventsController {
     });
   }
 
+  @Post(':eventId/organisers')
+  @UseGuards(EventOrganiserGuard)
+  async addEventOrganiser(
+    @Param('eventId') eventId: string,
+    @Body()
+    body: {
+      email: string;
+    },
+  ) {
+    return this.eventsService.addOrganiser({
+      email: body.email,
+      eventId,
+    });
+  }
+
   @Delete(':eventId')
   @UseGuards(EventOrganiserGuard)
   async deleteEvent(

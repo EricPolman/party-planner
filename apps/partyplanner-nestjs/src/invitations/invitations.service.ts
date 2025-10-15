@@ -93,13 +93,16 @@ export class InvitationsService {
       names: string[];
     };
   }) {
-    const inviteesData = data.names.map(name => ({
+    const inviteesData = data.names.map((name) => ({
       name: name,
       invitation: { connect: { id: invitation.id } },
     }));
     const invitees = await Promise.all(
-      inviteesData.map(inviteeData => this.prismaClient.invitee.create({ data: inviteeData }))
+      inviteesData.map((inviteeData) =>
+        this.prismaClient.invitee.create({ data: inviteeData }),
+      ),
     );
+
     return invitees;
   }
 

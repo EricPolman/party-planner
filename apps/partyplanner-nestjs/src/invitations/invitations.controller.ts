@@ -74,11 +74,13 @@ export class InvitationsController {
   ) {
     const invitation = request.invitation;
 
-    const cleanedNames = uniq(body.names
-      .split(",")
-      .map((name) => name.trim())
-      .filter((name) => name.length > 0));
-      
+    const cleanedNames = uniq(
+      body.names
+        .split(',')
+        .map((name) => name.trim())
+        .filter((name) => name.length > 0),
+    );
+
     return this.invitationsService.addInvitees({
       invitation,
       data: { names: cleanedNames },
