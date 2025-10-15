@@ -82,7 +82,7 @@ export function InvitationDetails({ invitation }: { invitation: Invitation }) {
           {invitation.invitees.map((invitee) => (
             <TableRow key={invitee.id}>
               <TableCell className="font-medium">
-                {invitee.firstName} {invitee.lastName}
+                {invitee.name}
               </TableCell>
               <TableCell>
                 <InviteeStatusBadge status={invitee.status} />
@@ -116,7 +116,7 @@ export function InvitationDetails({ invitation }: { invitation: Invitation }) {
           className="my-4"
           onClick={() => setIsAddInviteeDialogOpen(true)}
         >
-          + Gast toevoegen
+          + Gasten toevoegen
         </Button>
         <DialogContent>
           <AddInviteeForm

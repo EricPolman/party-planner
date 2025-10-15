@@ -40,8 +40,7 @@ export function useAddInvitee() {
     mutationFn: async (newInvitee: {
       invitationId: string;
       email?: string;
-      firstName: string;
-      lastName?: string;
+      name: string;
       phoneNumber?: string;
     }) => {
       const token = await getToken();

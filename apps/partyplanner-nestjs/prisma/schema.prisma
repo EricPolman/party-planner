@@ -49,8 +49,7 @@ model Invitee {
   id        String   @default(uuid()) @id
   email     String?
   phoneNumber String?
-  firstName String?
-  lastName  String?
+  name String
   invitation     Invitation    @relation(fields: [invitationId], references: [id], onDelete: Cascade)
   invitationId   String
   status    InviteeStatus @default(PENDING)

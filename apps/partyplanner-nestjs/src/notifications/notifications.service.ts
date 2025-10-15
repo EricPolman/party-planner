@@ -121,14 +121,14 @@ export class NotificationsService {
           Message: {
             Body: {
               Text: {
-                Data: `${invitee.firstName} ${invitee.lastName} (${invitee.email}, ${invitee.phoneNumber}) voor uitnodiging ${invitation.title}:
+                Data: `${invitee.name} (${invitee.email}, ${invitee.phoneNumber}) voor uitnodiging ${invitation.title}:
               
 Status: ${invitee.status}     
 Opmerkingen: ${invitee.comments || 'Geen'}`,
               },
             },
             Subject: {
-              Data: `RSVP update voor ${invitation.title} van ${invitee.firstName} ${invitee.lastName}`,
+              Data: `RSVP update voor ${invitation.title} van ${invitee.name}`,
             },
           },
           Source: process.env.EMAIL_FROM_ADDRESS!,
@@ -150,7 +150,7 @@ Opmerkingen: ${invitee.comments || 'Geen'}`,
                 .map(
                   (invitee) => `
 --------------------------------------
-${invitee.firstName} ${invitee.lastName} (${invitee.email}, ${invitee.phoneNumber}):
+${invitee.name}:
               
 Status: ${invitee.status}     
 Opmerkingen: ${invitee.comments || 'Geen'}`,

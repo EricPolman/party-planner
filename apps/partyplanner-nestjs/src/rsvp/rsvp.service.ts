@@ -43,8 +43,7 @@ export class RsvpService {
     data: {
       email?: string;
       phoneNumber?: string;
-      firstName: string;
-      lastName?: string;
+      name: string;
       comments?: string;
       status: InviteeStatus;
     };
@@ -59,19 +58,10 @@ export class RsvpService {
 
     // Upsert invitee based on email or phone number
     // If neither is provided, create a new invitee
-    const inviteeData: {
-      email?: string;
-      phoneNumber?: string;
-      firstName: string;
-      lastName?: string;
-      status: InviteeStatus;
-      comments?: string;
-      invitation: { connect: { id: string } };
-    } = {
+    const inviteeData = {
       email: data.email,
       phoneNumber: data.phoneNumber,
-      firstName: data.firstName,
-      lastName: data.lastName,
+      name: data.name,
       status: data.status,
       comments: data.comments,
       invitation: { connect: { id: invitation.id } },

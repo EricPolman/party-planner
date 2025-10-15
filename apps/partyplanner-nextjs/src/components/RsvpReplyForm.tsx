@@ -13,8 +13,7 @@ import { PulseButton } from "./ui/pulse-button";
 
 interface RsvpFormValues {
   email?: string;
-  firstName: string;
-  lastName?: string;
+  name: string;
   phoneNumber?: string;
   status: InviteeResponseStatus;
   comments?: string;
@@ -22,8 +21,7 @@ interface RsvpFormValues {
 
 const rsvpSchema = z.object({
   email: z.email(),
-  firstName: z.string().min(2).max(100),
-  lastName: z.string().min(2).max(100),
+  name: z.string().min(2).max(100),
   phoneNumber: z.string().min(10).optional(),
   status: z.enum([
     InviteeResponseStatus.ACCEPTED,
@@ -38,8 +36,7 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
 
   const initialValues: RsvpFormValues = {
     email: "",
-    firstName: "",
-    lastName: "",
+    name: "",
     phoneNumber: "",
     status: InviteeResponseStatus.ACCEPTED,
     comments: "",
@@ -52,12 +49,11 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
         onChange: rsvpSchema,
       },
       onSubmit: async ({ value }) => {
-        const { email, firstName, lastName, phoneNumber } = value;
+        const { email, name, phoneNumber } = value;
         await rsvpMutation.mutateAsync({
           invitationCode,
           email,
-          firstName,
-          lastName,
+          name,
           phoneNumber,
           status: value.status,
           comments: value.comments,
@@ -139,30 +135,13 @@ export function RsvpForm({ invitationCode }: { invitationCode: string }) {
             />
             <div className="flex flex-row gap-4">
               <form.Field
-                name="firstName"
+                name="name"
                 children={(field) => (
                   <Field>
-                    <FieldLabel htmlFor="firstName">Voornaam</FieldLabel>
+                    <FieldLabel htmlFor="name">Naam</FieldLabel>
                     <Input
-                      autoComplete="given-name"
-                      placeholder="Voornaam"
-                      value={field.state.value}
-                      id={field.name}
-                      name={field.name}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                  </Field>
-                )}
-              />
-              <form.Field
-                name="lastName"
-                children={(field) => (
-                  <Field>
-                    <FieldLabel htmlFor="lastName">Achternaam</FieldLabel>
-                    <Input
-                      autoComplete="family-name"
-                      placeholder="Achternaam"
+                      autoComplete="name"
+                      placeholder="Naam"
                       value={field.state.value}
                       id={field.name}
                       name={field.name}

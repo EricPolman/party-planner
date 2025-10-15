@@ -7,8 +7,7 @@ export enum InviteeResponseStatus {
 
 export interface Invitee {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string | null;
   phoneNumber: string | null;
   status: InviteeResponseStatus;

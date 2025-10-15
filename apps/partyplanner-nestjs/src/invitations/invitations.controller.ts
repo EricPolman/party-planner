@@ -70,8 +70,7 @@ export class InvitationsController {
     body: {
       email?: string;
       phoneNumber?: string;
-      firstName?: string;
-      lastName?: string;
+      name: string;
     },
   ) {
     const invitation = request.invitation;

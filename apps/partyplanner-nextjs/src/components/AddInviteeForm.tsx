@@ -7,15 +7,13 @@ import { useAddInvitee } from '@/hooks/useCreateEvent'
 
 interface AddInviteeFormValues {
   email?: string
-  firstName: string
-  lastName?: string
+  name: string
   phoneNumber?: string
 }
 
 const addInviteeSchema = z.object({
   email: z.email(),
-  firstName: z.string().min(2).max(100),
-  lastName: z.string().min(2).max(100),
+  name: z.string().min(2).max(100),
   phoneNumber: z.string().min(10).optional(),
 })
 
@@ -30,8 +28,7 @@ export function AddInviteeForm({
 
   const initialValues: AddInviteeFormValues = {
     email: "",
-    firstName: "",
-    lastName: "",
+    name: "",
     phoneNumber: "",
   };
 
@@ -42,12 +39,11 @@ export function AddInviteeForm({
         onChange: addInviteeSchema,
       },
       onSubmit: async ({ value, formApi }) => {
-        const { email, firstName, lastName, phoneNumber } = value;
+        const { email, name, phoneNumber } = value;
         await addInviteeMutation.mutateAsync({
           invitationId,
           email,
-          firstName,
-          lastName,
+          name,
           phoneNumber,
         });
 
@@ -68,30 +64,13 @@ export function AddInviteeForm({
       >
         <div className="flex flex-col gap-3">
           <form.Field
-            name="firstName"
+            name="name"
             children={(field) => (
               <Field>
-                <FieldLabel htmlFor="firstName">Voornaam</FieldLabel>
+                <FieldLabel htmlFor="name">Naam</FieldLabel>
                 <Input
                   autoComplete="off"
-                  placeholder="Voornaam"
-                  value={field.state.value}
-                  id={field.name}
-                  name={field.name}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              </Field>
-            )}
-          />
-          <form.Field
-            name="lastName"
-            children={(field) => (
-              <Field>
-                <FieldLabel htmlFor="lastName">Achternaam</FieldLabel>
-                <Input
-                  autoComplete="off"
-                  placeholder="Achternaam"
+                  placeholder="Naam"
                   value={field.state.value}
                   id={field.name}
                   name={field.name}
@@ -139,7 +118,7 @@ export function AddInviteeForm({
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
               <Button type="submit" className="mt-8" disabled={!canSubmit}>
-                {isSubmitting && "..."} Gast toevoegen
+                {isSubmitting && "..."} Gasten toevoegen
               </Button>
             )}
           />

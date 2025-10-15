@@ -23,8 +23,7 @@ export function useRsvpReply() {
     mutationFn: async (rsvp: {
       invitationCode: string;
       email?: string;
-      firstName: string;
-      lastName?: string;
+      name: string;
       phoneNumber?: string;
       status: InviteeResponseStatus;
       comments?: string;

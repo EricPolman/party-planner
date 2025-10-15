@@ -22,8 +22,7 @@ export class RsvpController {
     body: {
       email?: string;
       phoneNumber?: string;
-      firstName: string;
-      lastName?: string;
+      name: string;
       comments?: string;
       status: InviteeStatus;
     },

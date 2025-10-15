@@ -92,15 +92,13 @@ export class InvitationsService {
     data: {
       email?: string;
       phoneNumber?: string;
-      firstName?: string;
-      lastName?: string;
+      name: string;
     };
   }) {
     const inviteeData = {
       email: data.email,
       phoneNumber: data.phoneNumber,
-      firstName: data.firstName,
-      lastName: data.lastName,
+      name: data.name,
       invitation: { connect: { id: invitation.id } },
     };
 
